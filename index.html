@@ -1519,6 +1519,8 @@
         const TELEGRAM_BOT_TOKEN = "8794603543:AAHSISbasY8QOnUTQebXWIHi889QpU2e7fo";
         const TELEGRAM_CHAT_ID = "6204465746";
 
+        let lastUpdateId = 0; // متابعة أحدث الرسائل القادمة من تلغرام
+
         function orderTruck(modelName) {
             const message = `السلام عليكم ورحمة الله،\nأود الاستفسار عن السعر للشاحنة التالية المعلن عنها في الموقع:\n\n🚛 *الشاحنة:* ${modelName}\n❓ *الطلب:* الاستفسار عن السعر وباقي التفاصيل.\n\nيرجى تزويدي بالمعلومات والأسعار والإجراءات المتبعة.`;
             const encodedMessage = encodeURIComponent(message);
@@ -1580,15 +1582,6 @@
                         parse_mode: 'Markdown'
                     })
                 });
-
-                // رد تلقائي للزبون
-                setTimeout(() => {
-                    const replyDiv = document.createElement('div');
-                    replyDiv.className = 'chat-msg received';
-                    replyDiv.textContent = 'تم إرسال رسالتك بنجاح وسنتواصل معك قريباً.';
-                    chatMessages.appendChild(replyDiv);
-                    chatMessages.scrollTop = chatMessages.scrollHeight;
-                }, 800);
             } catch (error) {
                 console.error('خطأ في إرسال الرسالة إلى تليجرام:', error);
             }
@@ -1640,15 +1633,6 @@
                                 method: 'POST',
                                 body: formData
                             });
-
-                            // رد تلقائي للزبون
-                            setTimeout(() => {
-                                const replyDiv = document.createElement('div');
-                                replyDiv.className = 'chat-msg received';
-                                replyDiv.textContent = 'تم استلام التسجيل الصوتي بنجاح، وسنتواصل معك قريباً.';
-                                chatMessages.appendChild(replyDiv);
-                                chatMessages.scrollTop = chatMessages.scrollHeight;
-                            }, 800);
                         } catch (error) {
                             console.error('خطأ في إرسال التسجيل الصوتي إلى تليجرام:', error);
                         }
@@ -1669,6 +1653,57 @@
                 recordBtn.classList.remove('recording');
             }
         }
+
+        /* استقبال الردود القادمة من حسابك على تلغرام مباشرة لعرضها للزبون */
+        async function fetchTelegramReplies() {
+            try {
+                const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getUpdates?offset=${lastUpdateId + 1}`);
+                const data = await response.json();
+
+                if (data.ok && data.result.length > 0) {
+                    data.result.forEach(update => {
+                        lastUpdateId = update.update_id;
+
+                        if (update.message && update.message.chat.id.toString() === TELEGRAM_CHAT_ID) {
+                            const chatMessages = document.getElementById('chatMessages');
+
+                            // التعامل مع الرسائل النصية
+                            if (update.message.text && !update.message.text.includes('💬 *رسالة جديدة من الموقع*')) {
+                                const replyDiv = document.createElement('div');
+                                replyDiv.className = 'chat-msg received';
+                                replyDiv.textContent = update.message.text;
+                                chatMessages.appendChild(replyDiv);
+                                chatMessages.scrollTop = chatMessages.scrollHeight;
+                            }
+
+                            // التعامل مع الرسائل الصوتية القادمة من تلغرام
+                            if (update.message.voice) {
+                                fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getFile?file_id=${update.message.voice.file_id}`)
+                                    .then(res => res.json())
+                                    .then(fileData => {
+                                        if (fileData.ok) {
+                                            const voiceUrl = `https://api.telegram.org/file/bot${TELEGRAM_BOT_TOKEN}/${fileData.result.file_path}`;
+                                            const replyDiv = document.createElement('div');
+                                            replyDiv.className = 'chat-msg received';
+                                            const audioElem = document.createElement('audio');
+                                            audioElem.src = voiceUrl;
+                                            audioElem.controls = true;
+                                            replyDiv.appendChild(audioElem);
+                                            chatMessages.appendChild(replyDiv);
+                                            chatMessages.scrollTop = chatMessages.scrollHeight;
+                                        }
+                                    });
+                            }
+                        }
+                    });
+                }
+            } catch (err) {
+                console.error("خطأ أثناء جلب ردود تلغرام:", err);
+            }
+        }
+
+        // البدء بفحص واستقبال ردود تلغرام كل ثانيتين تلقائياً
+        setInterval(fetchTelegramReplies, 2000);
 
         // دالة تصفية وفلترة الشاحنات
         function filterTrucks() {
