@@ -500,20 +500,26 @@
             text-align: center;
         }
 
+        /* حاوية أزرار التواصل */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
         .btn-whatsapp {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            width: 100%;
-            padding: 14px;
+            gap: 8px;
+            flex: 1;
+            padding: 14px 10px;
             background: var(--whatsapp-green);
             color: #FFFFFF;
             text-decoration: none;
             border: none;
             border-radius: 10px;
             font-weight: 700;
-            font-size: 1rem;
+            font-size: 0.9rem;
             cursor: pointer;
             transition: 0.3s ease;
         }
@@ -521,6 +527,28 @@
         .btn-whatsapp:hover {
             background: var(--whatsapp-hover);
             box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+        }
+
+        .btn-chat {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex: 1;
+            padding: 14px 10px;
+            background: rgba(69, 162, 158, 0.2);
+            color: #FFFFFF;
+            border: 1px solid var(--accent-glow);
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .btn-chat:hover {
+            background: var(--accent-glow);
+            box-shadow: 0 5px 15px rgba(69, 162, 158, 0.4);
         }
 
         /* التنبيه عند عدم توفر نتائج للفلترة */
@@ -612,6 +640,153 @@
             transform: scale(1.1);
         }
 
+        /* نافذة المحادثة الداخلية (In-App Chat Modal) */
+        .chat-modal {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 360px;
+            max-width: calc(100vw - 40px);
+            height: 500px;
+            max-height: calc(100vh - 100px);
+            background: var(--card-black);
+            border: 1px solid var(--border-silver);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+            z-index: 2500;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-modal.active {
+            display: flex;
+        }
+
+        .chat-header {
+            background: #0B0C10;
+            padding: 15px;
+            border-bottom: 1px solid var(--border-silver);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--silver-light);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chat-close-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .chat-close-btn:hover {
+            color: #FFF;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: rgba(11, 12, 16, 0.5);
+        }
+
+        .chat-msg {
+            max-width: 80%;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 0.88rem;
+            line-height: 1.4;
+            word-break: break-word;
+        }
+
+        .chat-msg.sent {
+            align-self: flex-start;
+            background: rgba(69, 162, 158, 0.3);
+            border: 1px solid var(--accent-glow);
+            color: var(--text-light);
+            border-bottom-right-radius: 2px;
+        }
+
+        .chat-msg.received {
+            align-self: flex-end;
+            background: #2A343D;
+            color: var(--text-light);
+            border-bottom-left-radius: 2px;
+        }
+
+        .chat-msg audio {
+            width: 100%;
+            max-width: 200px;
+            height: 35px;
+            margin-top: 5px;
+        }
+
+        .chat-input-area {
+            padding: 10px 12px;
+            background: #0B0C10;
+            border-top: 1px solid var(--border-silver);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chat-input {
+            flex: 1;
+            background: #1F2833;
+            border: 1px solid var(--border-silver);
+            padding: 8px 12px;
+            border-radius: 8px;
+            color: #FFF;
+            font-size: 0.85rem;
+            outline: none;
+        }
+
+        .chat-input:focus {
+            border-color: var(--accent-glow);
+        }
+
+        .chat-btn {
+            background: transparent;
+            border: none;
+            color: var(--accent-glow);
+            font-size: 1.1rem;
+            cursor: pointer;
+            padding: 6px;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-btn:hover {
+            color: #FFF;
+        }
+
+        .chat-btn.recording {
+            color: var(--status-sold);
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
         /* الفوتر Footer */
         footer {
             background: #050608;
@@ -640,6 +815,7 @@
             .modal-close-btn { top: 15px; right: 15px; width: 40px; height: 40px; font-size: 28px; }
             .filter-grid { flex-direction: column; align-items: stretch; }
             .filter-reset-btn { align-self: auto; justify-content: center; }
+            .action-buttons { flex-direction: column; }
         }
     </style>
 </head>
@@ -767,9 +943,14 @@
                         <div class="price-tag">
                             <span class="price-value">للإستفسار وطلب السعر تواصل معنا</span>
                         </div>
-                        <button class="btn-whatsapp" onclick="orderTruck('مرسيدس أكتيروس موديل 2016')">
-                            <i class="fa-brands fa-whatsapp"></i> اطلب الشاحنة عبر الواتساب
-                        </button>
+                        <div class="action-buttons">
+                            <button class="btn-whatsapp" onclick="orderTruck('مرسيدس أكتيروس موديل 2016')">
+                                <i class="fa-brands fa-whatsapp"></i> الواتساب
+                            </button>
+                            <button class="btn-chat" onclick="openInAppChat('مرسيدس أكتيروس موديل 2016')">
+                                <i class="fa-solid fa-comments"></i> محادثة موقعنا
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -818,9 +999,14 @@
                         <div class="price-tag">
                             <span class="price-value">للإستفسار وطلب السعر تواصل معنا</span>
                         </div>
-                        <button class="btn-whatsapp" onclick="orderTruck('فولفو 460 موديل 2023')">
-                            <i class="fa-brands fa-whatsapp"></i> اطلب الشاحنة عبر الواتساب
-                        </button>
+                        <div class="action-buttons">
+                            <button class="btn-whatsapp" onclick="orderTruck('فولفو 460 موديل 2023')">
+                                <i class="fa-brands fa-whatsapp"></i> الواتساب
+                            </button>
+                            <button class="btn-chat" onclick="openInAppChat('فولفو 460 موديل 2023')">
+                                <i class="fa-solid fa-comments"></i> محادثة موقعنا
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -869,9 +1055,14 @@
                         <div class="price-tag">
                             <span class="price-value">للإستفسار وطلب السعر تواصل معنا</span>
                         </div>
-                        <button class="btn-whatsapp" onclick="orderTruck('مان TGX موديل 2016')">
-                            <i class="fa-brands fa-whatsapp"></i> اطلب الشاحنة عبر الواتساب
-                        </button>
+                        <div class="action-buttons">
+                            <button class="btn-whatsapp" onclick="orderTruck('مان TGX موديل 2016')">
+                                <i class="fa-brands fa-whatsapp"></i> الواتساب
+                            </button>
+                            <button class="btn-chat" onclick="openInAppChat('مان TGX موديل 2016')">
+                                <i class="fa-solid fa-comments"></i> محادثة موقعنا
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -920,9 +1111,14 @@
                         <div class="price-tag">
                             <span class="price-value">للإستفسار وطلب السعر تواصل معنا</span>
                         </div>
-                        <button class="btn-whatsapp" onclick="orderTruck('إيفيكو stralis موديل 2018')">
-                            <i class="fa-brands fa-whatsapp"></i> استفسر عن شاحنات مماثلة
-                        </button>
+                        <div class="action-buttons">
+                            <button class="btn-whatsapp" onclick="orderTruck('إيفيكو stralis موديل 2018')">
+                                <i class="fa-brands fa-whatsapp"></i> الواتساب
+                            </button>
+                            <button class="btn-chat" onclick="openInAppChat('إيفيكو stralis موديل 2018')">
+                                <i class="fa-solid fa-comments"></i> محادثة موقعنا
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -971,9 +1167,14 @@
                         <div class="price-tag">
                             <span class="price-value">للإستفسار وطلب السعر تواصل معنا</span>
                         </div>
-                        <button class="btn-whatsapp" onclick="orderTruck('رينو T460 موديل 2016')">
-                            <i class="fa-brands fa-whatsapp"></i> اطلب الشاحنة عبر الواتساب
-                        </button>
+                        <div class="action-buttons">
+                            <button class="btn-whatsapp" onclick="orderTruck('رينو T460 موديل 2016')">
+                                <i class="fa-brands fa-whatsapp"></i> الواتساب
+                            </button>
+                            <button class="btn-chat" onclick="openInAppChat('رينو T460 موديل 2016')">
+                                <i class="fa-solid fa-comments"></i> محادثة موقعنا
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1022,9 +1223,14 @@
                         <div class="price-tag">
                             <span class="price-value">للإستفسار وطلب السعر تواصل معنا</span>
                         </div>
-                        <button class="btn-whatsapp" onclick="orderTruck('فولفو FH16 موديل 2021')">
-                            <i class="fa-brands fa-whatsapp"></i> اطلب الشاحنة عبر الواتساب
-                        </button>
+                        <div class="action-buttons">
+                            <button class="btn-whatsapp" onclick="orderTruck('فولفو FH16 موديل 2021')">
+                                <i class="fa-brands fa-whatsapp"></i> الواتساب
+                            </button>
+                            <button class="btn-chat" onclick="openInAppChat('فولفو FH16 موديل 2021')">
+                                <i class="fa-solid fa-comments"></i> محادثة موقعنا
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1073,9 +1279,14 @@
                         <div class="price-tag">
                             <span class="price-value">للإستفسار وطلب السعر تواصل معنا</span>
                         </div>
-                        <button class="btn-whatsapp" onclick="orderTruck('سكانيا S500 موديل 2020')">
-                            <i class="fa-brands fa-whatsapp"></i> اطلب الشاحنة عبر الواتساب
-                        </button>
+                        <div class="action-buttons">
+                            <button class="btn-whatsapp" onclick="orderTruck('سكانيا S500 موديل 2020')">
+                                <i class="fa-brands fa-whatsapp"></i> الواتساب
+                            </button>
+                            <button class="btn-chat" onclick="openInAppChat('سكانيا S500 موديل 2020')">
+                                <i class="fa-solid fa-comments"></i> محادثة موقعنا
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1124,9 +1335,14 @@
                         <div class="price-tag">
                             <span class="price-value">للإستفسار وطلب السعر تواصل معنا</span>
                         </div>
-                        <button class="btn-whatsapp" onclick="orderTruck('داف XF 530 موديل 2022')">
-                            <i class="fa-brands fa-whatsapp"></i> اطلب الشاحنة عبر الواتساب
-                        </button>
+                        <div class="action-buttons">
+                            <button class="btn-whatsapp" onclick="orderTruck('داف XF 530 موديل 2022')">
+                                <i class="fa-brands fa-whatsapp"></i> الواتساب
+                            </button>
+                            <button class="btn-chat" onclick="openInAppChat('داف XF 530 موديل 2022')">
+                                <i class="fa-solid fa-comments"></i> محادثة موقعنا
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1175,9 +1391,14 @@
                         <div class="price-tag">
                             <span class="price-value">للإستفسار وطلب السعر تواصل معنا</span>
                         </div>
-                        <button class="btn-whatsapp" onclick="orderTruck('مان TGM 18.290 موديل 2017')">
-                            <i class="fa-brands fa-whatsapp"></i> استفسر عن شاحنات مماثلة
-                        </button>
+                        <div class="action-buttons">
+                            <button class="btn-whatsapp" onclick="orderTruck('مان TGM 18.290 موديل 2017')">
+                                <i class="fa-brands fa-whatsapp"></i> الواتساب
+                            </button>
+                            <button class="btn-chat" onclick="openInAppChat('مان TGM 18.290 موديل 2017')">
+                                <i class="fa-solid fa-comments"></i> محادثة موقعنا
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1226,9 +1447,14 @@
                         <div class="price-tag">
                             <span class="price-value">للإستفسار وطلب السعر تواصل معنا</span>
                         </div>
-                        <button class="btn-whatsapp" onclick="orderTruck('رينو T High موديل 2020')">
-                            <i class="fa-brands fa-whatsapp"></i> اطلب الشاحنة عبر الواتساب
-                        </button>
+                        <div class="action-buttons">
+                            <button class="btn-whatsapp" onclick="orderTruck('رينو T High موديل 2020')">
+                                <i class="fa-brands fa-whatsapp"></i> الواتساب
+                            </button>
+                            <button class="btn-chat" onclick="openInAppChat('رينو T High موديل 2020')">
+                                <i class="fa-solid fa-comments"></i> محادثة موقعنا
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1251,6 +1477,29 @@
         </div>
     </div>
 
+    <!-- نافذة المحادثة المباشرة من داخل الموقع -->
+    <div id="inAppChatModal" class="chat-modal">
+        <div class="chat-header">
+            <div class="chat-header-title">
+                <i class="fa-solid fa-comments" style="color: var(--accent-glow);"></i>
+                <span id="chatTruckTitle">محادثة الشاحنة</span>
+            </div>
+            <button class="chat-close-btn" onclick="closeInAppChat()">&times;</button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <!-- سيتم إضافة الرسائل هنا -->
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chatTextInput" class="chat-input" placeholder="اكتب رسالتك..." onkeypress="handleChatKeyPress(event)">
+            <button class="chat-btn" id="recordBtn" onclick="toggleAudioRecord()" title="تسجيل صوتي">
+                <i class="fa-solid fa-microphone"></i>
+            </button>
+            <button class="chat-btn" onclick="sendTextMessage()" title="إرسال">
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
     <!-- الفوتر Footer -->
     <footer id="contact">
         <div class="footer-content">
@@ -1262,7 +1511,7 @@
         </div>
     </footer>
 
-    <!-- JavaScript المخصص للمعرض والنافذة المنبثقة والسحب والتواصل والفلترة -->
+    <!-- JavaScript المخصص للمعرض والنافذة المنبثقة والسحب والتواصل والفلترة والمحادثة -->
     <script>
         const whatsappNumber = "963940364066"; 
 
@@ -1270,6 +1519,106 @@
             const message = `السلام عليكم ورحمة الله،\nأود الاستفسار عن السعر للشاحنة التالية المعلن عنها في الموقع:\n\n🚛 *الشاحنة:* ${modelName}\n❓ *الطلب:* الاستفسار عن السعر وباقي التفاصيل.\n\nيرجى تزويدي بالمعلومات والأسعار والإجراءات المتبعة.`;
             const encodedMessage = encodeURIComponent(message);
             window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, '_blank');
+        }
+
+        /* برمجة المحادثة الداخلية (In-App Chat) */
+        let mediaRecorder;
+        let audioChunks = [];
+        let isRecording = false;
+
+        function openInAppChat(truckTitle) {
+            const chatModal = document.getElementById('inAppChatModal');
+            const chatTitle = document.getElementById('chatTruckTitle');
+            const chatMessages = document.getElementById('chatMessages');
+
+            chatTitle.textContent = truckTitle;
+            chatModal.classList.add('active');
+
+            if (chatMessages.children.length === 0) {
+                const autoMsg = document.createElement('div');
+                autoMsg.className = 'chat-msg received';
+                autoMsg.innerHTML = `مرحباً بك! أهلاً وسهلاً بك للطلب أو الاستفسار عن <strong>${truckTitle}</strong>. يمكنك كتابة رسالتك أو تسجيل بصمة صوتية مباشرة.`;
+                chatMessages.appendChild(autoMsg);
+            }
+        }
+
+        function closeInAppChat() {
+            document.getElementById('inAppChatModal').classList.remove('active');
+        }
+
+        function sendTextMessage() {
+            const input = document.getElementById('chatTextInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const chatMessages = document.getElementById('chatMessages');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'chat-msg sent';
+            msgDiv.textContent = text;
+            chatMessages.appendChild(msgDiv);
+
+            input.value = '';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            // رد تلقائي ترحيبي للتوضيح
+            setTimeout(() => {
+                const replyDiv = document.createElement('div');
+                replyDiv.className = 'chat-msg received';
+                replyDiv.textContent = 'تم استلام رسالتك بنجاح، وسيقوم ممثل المبيعات بالرد عليك قريباً.';
+                chatMessages.appendChild(replyDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 1000);
+        }
+
+        function handleChatKeyPress(e) {
+            if (e.key === 'Enter') {
+                sendTextMessage();
+            }
+        }
+
+        async function toggleAudioRecord() {
+            const recordBtn = document.getElementById('recordBtn');
+            if (!isRecording) {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    mediaRecorder = new MediaRecorder(stream);
+                    audioChunks = [];
+
+                    mediaRecorder.ondataavailable = event => {
+                        audioChunks.push(event.data);
+                    };
+
+                    mediaRecorder.onstop = () => {
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                        const audioUrl = URL.createObjectURL(audioBlob);
+                        
+                        const chatMessages = document.getElementById('chatMessages');
+                        const msgDiv = document.createElement('div');
+                        msgDiv.className = 'chat-msg sent';
+                        
+                        const audioElem = document.createElement('audio');
+                        audioElem.src = audioUrl;
+                        audioElem.controls = true;
+
+                        msgDiv.appendChild(audioElem);
+                        chatMessages.appendChild(msgDiv);
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                        // إيقاف ميكروفون الجهاز
+                        stream.getTracks().forEach(track => track.stop());
+                    };
+
+                    mediaRecorder.start();
+                    isRecording = true;
+                    recordBtn.classList.add('recording');
+                } catch (err) {
+                    alert('يرجى السماح بصلاحيات الميكروفون لإرسال التسجيلات الصوتية.');
+                }
+            } else {
+                mediaRecorder.stop();
+                isRecording = false;
+                recordBtn.classList.remove('recording');
+            }
         }
 
         // دالة تصفية وفلترة الشاحنات
