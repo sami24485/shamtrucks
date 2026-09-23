@@ -1511,9 +1511,13 @@
         </div>
     </footer>
 
-    <!-- JavaScript المخصص للمعرض والنافذة المنبثقة والسحب والتواصل والفلترة والمحادثة -->
+    <!-- JavaScript المخصص للمعرض والنافذة المنبثقة والسحب والتواصل والفلترة والمحادثة المربوطة بتليجرام -->
     <script>
         const whatsappNumber = "963940364066"; 
+
+        // بيانات بوت تليجرام الخاصة بك
+        const TELEGRAM_BOT_TOKEN = "8794603543:AAHSISbasY8QOnUTQebXWIHi889QpU2e7fo";
+        const TELEGRAM_CHAT_ID = "6204465746";
 
         function orderTruck(modelName) {
             const message = `السلام عليكم ورحمة الله،\nأود الاستفسار عن السعر للشاحنة التالية المعلن عنها في الموقع:\n\n🚛 *الشاحنة:* ${modelName}\n❓ *الطلب:* الاستفسار عن السعر وباقي التفاصيل.\n\nيرجى تزويدي بالمعلومات والأسعار والإجراءات المتبعة.`;
@@ -1521,7 +1525,7 @@
             window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, '_blank');
         }
 
-        /* برمجة المحادثة الداخلية (In-App Chat) */
+        /* برمجة المحادثة الداخلية الربط مع تليجرام */
         let mediaRecorder;
         let audioChunks = [];
         let isRecording = false;
@@ -1546,28 +1550,48 @@
             document.getElementById('inAppChatModal').classList.remove('active');
         }
 
-        function sendTextMessage() {
+        async function sendTextMessage() {
             const input = document.getElementById('chatTextInput');
             const text = input.value.trim();
+            const truckTitle = document.getElementById('chatTruckTitle').textContent;
             if (!text) return;
 
             const chatMessages = document.getElementById('chatMessages');
+            
+            // عرض الرسالة في شاشة الزبون بالموقع
             const msgDiv = document.createElement('div');
             msgDiv.className = 'chat-msg sent';
             msgDiv.textContent = text;
             chatMessages.appendChild(msgDiv);
-
             input.value = '';
             chatMessages.scrollTop = chatMessages.scrollHeight;
 
-            // رد تلقائي ترحيبي للتوضيح
-            setTimeout(() => {
-                const replyDiv = document.createElement('div');
-                replyDiv.className = 'chat-msg received';
-                replyDiv.textContent = 'تم استلام رسالتك بنجاح، وسيقوم ممثل المبيعات بالرد عليك قريباً.';
-                chatMessages.appendChild(replyDiv);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }, 1000);
+            // تجهيز النص المراد إرساله إلى تليجرام
+            const fullMessage = `💬 *رسالة جديدة من الموقع*\n🚛 *الشاحنة:* ${truckTitle}\n✉️ *الرسالة:* ${text}`;
+
+            // إرسال النص إلى بوت تليجرام
+            try {
+                await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: fullMessage,
+                        parse_mode: 'Markdown'
+                    })
+                });
+
+                // رد تلقائي للزبون
+                setTimeout(() => {
+                    const replyDiv = document.createElement('div');
+                    replyDiv.className = 'chat-msg received';
+                    replyDiv.textContent = 'تم إرسال رسالتك بنجاح وسنتواصل معك قريباً.';
+                    chatMessages.appendChild(replyDiv);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }, 800);
+            } catch (error) {
+                console.error('خطأ في إرسال الرسالة إلى تليجرام:', error);
+            }
         }
 
         function handleChatKeyPress(e) {
@@ -1578,6 +1602,8 @@
 
         async function toggleAudioRecord() {
             const recordBtn = document.getElementById('recordBtn');
+            const truckTitle = document.getElementById('chatTruckTitle').textContent;
+
             if (!isRecording) {
                 try {
                     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -1588,21 +1614,44 @@
                         audioChunks.push(event.data);
                     };
 
-                    mediaRecorder.onstop = () => {
-                        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                    mediaRecorder.onstop = async () => {
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/ogg' });
                         const audioUrl = URL.createObjectURL(audioBlob);
                         
+                        // عرض الصوت في شاشة الزبون بالموقع
                         const chatMessages = document.getElementById('chatMessages');
                         const msgDiv = document.createElement('div');
                         msgDiv.className = 'chat-msg sent';
-                        
                         const audioElem = document.createElement('audio');
                         audioElem.src = audioUrl;
                         audioElem.controls = true;
-
                         msgDiv.appendChild(audioElem);
                         chatMessages.appendChild(msgDiv);
                         chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                        // إرسال التسجيل الصوتي إلى تليجرام
+                        const formData = new FormData();
+                        formData.append('chat_id', TELEGRAM_CHAT_ID);
+                        formData.append('voice', audioBlob, 'voice.ogg');
+                        formData.append('caption', `🎙️ *تسجيل صوتي جديد*\n🚛 *الشاحنة:* ${truckTitle}`);
+
+                        try {
+                            await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendVoice`, {
+                                method: 'POST',
+                                body: formData
+                            });
+
+                            // رد تلقائي للزبون
+                            setTimeout(() => {
+                                const replyDiv = document.createElement('div');
+                                replyDiv.className = 'chat-msg received';
+                                replyDiv.textContent = 'تم استلام التسجيل الصوتي بنجاح، وسنتواصل معك قريباً.';
+                                chatMessages.appendChild(replyDiv);
+                                chatMessages.scrollTop = chatMessages.scrollHeight;
+                            }, 800);
+                        } catch (error) {
+                            console.error('خطأ في إرسال التسجيل الصوتي إلى تليجرام:', error);
+                        }
 
                         // إيقاف ميكروفون الجهاز
                         stream.getTracks().forEach(track => track.stop());
@@ -1695,7 +1744,7 @@
                 const fullImg = document.getElementById('fullImage');
                 fullImg.src = img.src;
                 modal.classList.add('show');
-                document.body.style.overflow = 'hidden'; // إيقاف التمرير الخلفي
+                document.body.style.overflow = 'hidden';
             }
         }
 
@@ -1704,7 +1753,7 @@
             if (event.target.id === 'imageModal' || event.target.classList.contains('modal-close-btn') || event.target.tagName === 'SPAN') {
                 const modal = document.getElementById('imageModal');
                 modal.classList.remove('show');
-                document.body.style.overflow = 'auto'; // إعادة التمرير
+                document.body.style.overflow = 'auto';
             }
         }
 
@@ -1740,18 +1789,14 @@
                 let diffX = startX - currentX;
                 let currentIndex = parseInt(gallery.getAttribute('data-index')) || 0;
 
-                // إذا كان الفرق أكبر من 40px نعتبرها عملية سحب
                 if (Math.abs(diffX) > 40 && currentX !== 0) {
                     if (diffX < 0) {
-                        // سحب لليمين (الصورة التالية بـ RTL)
                         updateGallery(gallery, currentIndex - 1);
                     } else {
-                        // سحب لليسار (الصورة السابقة بـ RTL)
                         updateGallery(gallery, currentIndex + 1);
                     }
                 }
-                
-                // إعادة ضبط المتغيرات
+
                 isDragging = false;
                 startX = 0;
                 currentX = 0;
