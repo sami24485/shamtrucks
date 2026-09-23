@@ -23,6 +23,9 @@
             --gradient-silver: linear-gradient(135deg, #FFFFFF 0%, #C0C0C0 50%, #707070 100%);
             --whatsapp-green: #25D366;
             --whatsapp-hover: #1EBE57;
+            --status-available: #10B981;
+            --status-incoming: #F59E0B;
+            --status-sold: #EF4444;
         }
 
         * {
@@ -160,7 +163,7 @@
             text-align: center;
             font-size: 2.4rem;
             font-weight: 800;
-            margin-bottom: 60px;
+            margin-bottom: 40px;
             position: relative;
             background: var(--gradient-silver);
             -webkit-background-clip: text;
@@ -177,6 +180,92 @@
             left: 50%;
             transform: translateX(-50%);
             border-radius: 2px;
+        }
+
+        /* شريط التصفية والفلترة الحديث */
+        .filter-container {
+            background: rgba(31, 40, 51, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-silver);
+            border-radius: 16px;
+            padding: 20px 25px;
+            margin-bottom: 50px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .filter-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 220px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .filter-group label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--silver-light);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-group label i {
+            color: var(--silver-dark);
+        }
+
+        .filter-select {
+            width: 100%;
+            background: #0B0C10;
+            color: var(--text-light);
+            border: 1px solid var(--border-silver);
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-select:hover, .filter-select:focus {
+            border-color: var(--silver-light);
+            box-shadow: 0 0 10px rgba(192, 192, 192, 0.2);
+        }
+
+        .filter-select option {
+            background: #1F2833;
+            color: #FFFFFF;
+        }
+
+        .filter-reset-btn {
+            background: transparent;
+            color: var(--silver-dark);
+            border: 1px solid var(--border-silver);
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            align-self: flex-end;
+        }
+
+        .filter-reset-btn:hover {
+            color: #FFFFFF;
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--silver-light);
         }
 
         .grid {
@@ -198,16 +287,26 @@
             justify-content: space-between;
         }
 
+        .truck-card.hidden {
+            display: none !important;
+        }
+
         .truck-card:hover {
             transform: translateY(-8px);
             border-color: var(--silver-light);
             box-shadow: 0 15px 30px rgba(192, 192, 192, 0.15);
         }
 
-        .truck-badge {
+        .truck-badges {
             position: absolute;
             top: 15px;
             right: 15px;
+            display: flex;
+            gap: 8px;
+            z-index: 5;
+        }
+
+        .truck-badge {
             background: rgba(11, 12, 16, 0.85);
             color: var(--silver-light);
             backdrop-filter: blur(8px);
@@ -216,8 +315,20 @@
             font-size: 0.8rem;
             font-weight: 700;
             border: 1px solid var(--border-silver);
-            z-index: 5;
         }
+
+        .status-badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            backdrop-filter: blur(8px);
+            color: #FFFFFF;
+        }
+
+        .status-available { background: rgba(16, 185, 129, 0.85); border: 1px solid #10B981; }
+        .status-incoming { background: rgba(245, 158, 11, 0.85); border: 1px solid #F59E0B; }
+        .status-sold { background: rgba(239, 68, 68, 0.85); border: 1px solid #EF4444; }
 
         /* معرض الصور المتعددة بنسبة 4:3 وسحب الأصبع */
         .truck-gallery {
@@ -412,6 +523,30 @@
             box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
         }
 
+        /* التنبيه عند عدم توفر نتائج للفلترة */
+        .no-results {
+            display: none;
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(31, 40, 51, 0.4);
+            border: 1px dashed var(--border-silver);
+            border-radius: 16px;
+            color: var(--text-muted);
+        }
+
+        .no-results i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: var(--silver-dark);
+        }
+
+        .no-results h3 {
+            font-size: 1.4rem;
+            color: var(--silver-light);
+            margin-bottom: 8px;
+        }
+
         /* تنسيقات النافذة المنبثقة (Modal / Lightbox) لعرض الصورة الكاملة */
         .image-modal {
             display: none;
@@ -503,6 +638,8 @@
             nav { display: none; }
             .footer-content { flex-direction: column; text-align: center; }
             .modal-close-btn { top: 15px; right: 15px; width: 40px; height: 40px; font-size: 28px; }
+            .filter-grid { flex-direction: column; align-items: stretch; }
+            .filter-reset-btn { align-self: auto; justify-content: center; }
         }
     </style>
 </head>
@@ -548,11 +685,49 @@
     <!-- قسم الأسطول والشاحنات -->
     <section class="fleet-section" id="fleet">
         <h2 class="section-title">الشاحنات المتاحة للطلب</h2>
-        <div class="grid">
+
+        <!-- شريط التصفية والفلترة الحديث -->
+        <div class="filter-container">
+            <div class="filter-grid">
+                <!-- الخيار الأول: الشركة المصنعة -->
+                <div class="filter-group">
+                    <label for="brandFilter"><i class="fa-solid fa-industry"></i> الشركة المصنعة</label>
+                    <select id="brandFilter" class="filter-select" onchange="filterTrucks()">
+                        <option value="all">جميع الشركات</option>
+                        <option value="scania">Scania (سكانيا)</option>
+                        <option value="volvo">Volvo (فولفو)</option>
+                        <option value="mercedes">Mercedes (مرسيدس)</option>
+                        <option value="man">MAN (مان)</option>
+                        <option value="iveco">Iveco (إيفيكو)</option>
+                    </select>
+                </div>
+
+                <!-- الخيار الثاني: حالة الشاحنة -->
+                <div class="filter-group">
+                    <label for="statusFilter"><i class="fa-solid fa-list-check"></i> حالة الشاحنة</label>
+                    <select id="statusFilter" class="filter-select" onchange="filterTrucks()">
+                        <option value="all">جميع الحالات</option>
+                        <option value="available">شاحنات متاحة</option>
+                        <option value="incoming">شاحنات قادمة</option>
+                        <option value="sold">شاحنات تم بيعها</option>
+                    </select>
+                </div>
+
+                <!-- زر إعادة ضبط الخيارات -->
+                <button class="filter-reset-btn" onclick="resetFilters()">
+                    <i class="fa-solid fa-rotate-left"></i> إعادة ضبط
+                </button>
+            </div>
+        </div>
+
+        <div class="grid" id="trucksGrid">
 
             <!-- 1. Mercedes-Benz Actros -->
-            <div class="truck-card">
-                <span class="truck-badge">Mercedes</span>
+            <div class="truck-card" data-brand="mercedes" data-status="available">
+                <div class="truck-badges">
+                    <span class="truck-badge">Mercedes</span>
+                    <span class="status-badge status-available">متاحة</span>
+                </div>
                 
                 <!-- معرض الصور الـ 4 مع خاصية السحب بالأصبع -->
                 <div class="truck-gallery" data-index="0">
@@ -600,8 +775,11 @@
             </div>
 
             <!-- 2. Volvo 460 -->
-            <div class="truck-card">
-                <span class="truck-badge">Volvo</span>
+            <div class="truck-card" data-brand="volvo" data-status="incoming">
+                <div class="truck-badges">
+                    <span class="truck-badge">Volvo</span>
+                    <span class="status-badge status-incoming">قادمة</span>
+                </div>
                 
                 <div class="truck-gallery" data-index="0">
                     <button class="gallery-btn prev" onclick="changeSlide(this, -1)"><i class="fa-solid fa-chevron-right"></i></button>
@@ -648,8 +826,11 @@
             </div>
 
             <!-- 3. MAN TGX -->
-            <div class="truck-card">
-                <span class="truck-badge">MAN</span>
+            <div class="truck-card" data-brand="man" data-status="available">
+                <div class="truck-badges">
+                    <span class="truck-badge">MAN</span>
+                    <span class="status-badge status-available">متاحة</span>
+                </div>
                 
                 <div class="truck-gallery" data-index="0">
                     <button class="gallery-btn prev" onclick="changeSlide(this, -1)"><i class="fa-solid fa-chevron-right"></i></button>
@@ -696,8 +877,11 @@
             </div>
 
             <!-- 4. IVECO stralis -->
-            <div class="truck-card">
-                <span class="truck-badge">IVECO</span>
+            <div class="truck-card" data-brand="iveco" data-status="sold">
+                <div class="truck-badges">
+                    <span class="truck-badge">IVECO</span>
+                    <span class="status-badge status-sold">تم بيعها</span>
+                </div>
                 
                 <div class="truck-gallery" data-index="0">
                     <button class="gallery-btn prev" onclick="changeSlide(this, -1)"><i class="fa-solid fa-chevron-right"></i></button>
@@ -734,18 +918,21 @@
 
                     <div>
                         <div class="price-tag">
-                            <span class="price-value">للإستفسار وطلب السعر تواصل معنا</span>
+                            <span class="price-value">تم بيع الشاحنة</span>
                         </div>
                         <button class="btn-whatsapp" onclick="orderTruck('إيفيكو stralis موديل 2018')">
-                            <i class="fa-brands fa-whatsapp"></i> اطلب الشاحنة عبر الواتساب
+                            <i class="fa-brands fa-whatsapp"></i> استفسر عن شاحنات مماثلة
                         </button>
                     </div>
                 </div>
             </div>
 
             <!-- 5. Renault T 460 -->
-            <div class="truck-card">
-                <span class="truck-badge">Renault</span>
+            <div class="truck-card" data-brand="renault" data-status="available">
+                <div class="truck-badges">
+                    <span class="truck-badge">Renault</span>
+                    <span class="status-badge status-available">متاحة</span>
+                </div>
                 
                 <div class="truck-gallery" data-index="0">
                     <button class="gallery-btn prev" onclick="changeSlide(this, -1)"><i class="fa-solid fa-chevron-right"></i></button>
@@ -792,8 +979,11 @@
             </div>
 
             <!-- 6. Volvo FH16 -->
-            <div class="truck-card">
-                <span class="truck-badge">Volvo</span>
+            <div class="truck-card" data-brand="volvo" data-status="available">
+                <div class="truck-badges">
+                    <span class="truck-badge">Volvo</span>
+                    <span class="status-badge status-available">متاحة</span>
+                </div>
                 
                 <div class="truck-gallery" data-index="0">
                     <button class="gallery-btn prev" onclick="changeSlide(this, -1)"><i class="fa-solid fa-chevron-right"></i></button>
@@ -840,8 +1030,11 @@
             </div>
 
             <!-- 7. Scania S500 -->
-            <div class="truck-card">
-                <span class="truck-badge">Scania</span>
+            <div class="truck-card" data-brand="scania" data-status="incoming">
+                <div class="truck-badges">
+                    <span class="truck-badge">Scania</span>
+                    <span class="status-badge status-incoming">قادمة</span>
+                </div>
                 
                 <div class="truck-gallery" data-index="0">
                     <button class="gallery-btn prev" onclick="changeSlide(this, -1)"><i class="fa-solid fa-chevron-right"></i></button>
@@ -888,8 +1081,11 @@
             </div>
 
             <!-- 8. DAF XF 530 -->
-            <div class="truck-card">
-                <span class="truck-badge">DAF</span>
+            <div class="truck-card" data-brand="daf" data-status="available">
+                <div class="truck-badges">
+                    <span class="truck-badge">DAF</span>
+                    <span class="status-badge status-available">متاحة</span>
+                </div>
                 
                 <div class="truck-gallery" data-index="0">
                     <button class="gallery-btn prev" onclick="changeSlide(this, -1)"><i class="fa-solid fa-chevron-right"></i></button>
@@ -936,8 +1132,11 @@
             </div>
 
             <!-- 9. MAN TGM -->
-            <div class="truck-card">
-                <span class="truck-badge">MAN</span>
+            <div class="truck-card" data-brand="man" data-status="sold">
+                <div class="truck-badges">
+                    <span class="truck-badge">MAN</span>
+                    <span class="status-badge status-sold">تم بيعها</span>
+                </div>
                 
                 <div class="truck-gallery" data-index="0">
                     <button class="gallery-btn prev" onclick="changeSlide(this, -1)"><i class="fa-solid fa-chevron-right"></i></button>
@@ -974,18 +1173,21 @@
 
                     <div>
                         <div class="price-tag">
-                            <span class="price-value">للإستفسار وطلب السعر تواصل معنا</span>
+                            <span class="price-value">تم بيع الشاحنة</span>
                         </div>
                         <button class="btn-whatsapp" onclick="orderTruck('مان TGM 18.290 موديل 2017')">
-                            <i class="fa-brands fa-whatsapp"></i> اطلب الشاحنة عبر الواتساب
+                            <i class="fa-brands fa-whatsapp"></i> استفسر عن شاحنات مماثلة
                         </button>
                     </div>
                 </div>
             </div>
 
             <!-- 10. Renault T High 520 -->
-            <div class="truck-card">
-                <span class="truck-badge">Renault</span>
+            <div class="truck-card" data-brand="renault" data-status="incoming">
+                <div class="truck-badges">
+                    <span class="truck-badge">Renault</span>
+                    <span class="status-badge status-incoming">قادمة</span>
+                </div>
                 
                 <div class="truck-gallery" data-index="0">
                     <button class="gallery-btn prev" onclick="changeSlide(this, -1)"><i class="fa-solid fa-chevron-right"></i></button>
@@ -1031,6 +1233,13 @@
                 </div>
             </div>
 
+            <!-- رسالة تنبيه عند عدم توفر شاحنات تطابق التصفية -->
+            <div class="no-results" id="noResults">
+                <i class="fa-solid fa-truck-slash"></i>
+                <h3>لا توجد شاحنات تطابق خيارات البحث</h3>
+                <p>يرجى اختيار شركة أخرى أو تغيير حالة الشاحنة لعرض النتائج المتاحة.</p>
+            </div>
+
         </div>
     </section>
 
@@ -1053,7 +1262,7 @@
         </div>
     </footer>
 
-    <!-- JavaScript المخصص للمعرض والنافذة المنبثقة والسحب والتواصل -->
+    <!-- JavaScript المخصص للمعرض والنافذة المنبثقة والسحب والتواصل والفلترة -->
     <script>
         const whatsappNumber = "963940364066"; 
 
@@ -1061,6 +1270,43 @@
             const message = `السلام عليكم ورحمة الله،\nأود الاستفسار عن السعر للشاحنة التالية المعلن عنها في الموقع:\n\n🚛 *الشاحنة:* ${modelName}\n❓ *الطلب:* الاستفسار عن السعر وباقي التفاصيل.\n\nيرجى تزويدي بالمعلومات والأسعار والإجراءات المتبعة.`;
             const encodedMessage = encodeURIComponent(message);
             window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, '_blank');
+        }
+
+        // دالة تصفية وفلترة الشاحنات
+        function filterTrucks() {
+            const selectedBrand = document.getElementById('brandFilter').value;
+            const selectedStatus = document.getElementById('statusFilter').value;
+            const cards = document.querySelectorAll('.truck-card');
+            const noResults = document.getElementById('noResults');
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const cardBrand = card.getAttribute('data-brand');
+                const cardStatus = card.getAttribute('data-status');
+
+                const brandMatch = (selectedBrand === 'all' || cardBrand === selectedBrand);
+                const statusMatch = (selectedStatus === 'all' || cardStatus === selectedStatus);
+
+                if (brandMatch && statusMatch) {
+                    card.classList.remove('hidden');
+                    visibleCount++;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+
+            if (visibleCount === 0) {
+                noResults.style.display = 'block';
+            } else {
+                noResults.style.display = 'none';
+            }
+        }
+
+        // إعادة ضبط الفلاتر
+        function resetFilters() {
+            document.getElementById('brandFilter').value = 'all';
+            document.getElementById('statusFilter').value = 'all';
+            filterTrucks();
         }
 
         // تحديث المعرض وموقعه
