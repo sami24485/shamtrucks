@@ -1492,6 +1492,7 @@
         const CUSTOMER_SESSION_ID = Math.floor(1000 + Math.random() * 9000); 
 
         let lastUpdateId = 0;
+        let processedUpdateIds = new Set();
         let mediaRecorder;
         let audioChunks = [];
         let isRecording = false;
@@ -1619,7 +1620,7 @@
             }
         }
 
-        /* جلب الردود وتوجيه الرد للزبون المناسب عبر الرد المباشر (Reply) في تلغرام */
+        /* جلب الردود وتوجيه الرد للزبون المناسب مع الحماية التامة من التكرار */
         async function fetchTelegramReplies() {
             try {
                 const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getUpdates?offset=${lastUpdateId + 1}`);
@@ -1627,7 +1628,15 @@
 
                 if (data.ok && data.result.length > 0) {
                     data.result.forEach(update => {
-                        lastUpdateId = update.update_id;
+                        // استخدام Set لمنع معالجة نفس التحديث مجدداً
+                        if (processedUpdateIds.has(update.update_id)) {
+                            return;
+                        }
+                        processedUpdateIds.add(update.update_id);
+
+                        if (update.update_id > lastUpdateId) {
+                            lastUpdateId = update.update_id;
+                        }
 
                         if (update.message && update.message.chat.id.toString() === TELEGRAM_CHAT_ID) {
                             
