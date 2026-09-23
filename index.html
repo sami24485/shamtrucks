@@ -181,7 +181,7 @@
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
             gap: 35px;
         }
 
@@ -216,25 +216,96 @@
             font-size: 0.8rem;
             font-weight: 700;
             border: 1px solid var(--border-silver);
-            z-index: 2;
+            z-index: 5;
         }
 
-        .truck-img-wrapper {
+        /* معرض الصور المتعددة بنسبة 4:3 وسحب الأصبع */
+        .truck-gallery {
             position: relative;
             width: 100%;
-            height: 230px;
+            aspect-ratio: 4 / 3;
             overflow: hidden;
+            background-color: #12161c;
+            touch-action: pan-y;
         }
 
-        .truck-img {
+        .gallery-track {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.3s ease-out;
+        }
+
+        .gallery-slide {
+            min-width: 100%;
+            height: 100%;
+            user-select: none;
+        }
+
+        .gallery-slide img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s ease;
+            pointer-events: none;
         }
 
-        .truck-card:hover .truck-img {
-            transform: scale(1.05);
+        /* أسهم التنقل */
+        .gallery-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(11, 12, 16, 0.6);
+            color: var(--silver-light);
+            border: 1px solid var(--border-silver);
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 4;
+            transition: 0.3s;
+            opacity: 0.8;
+        }
+
+        .gallery-btn:hover {
+            background: rgba(11, 12, 16, 0.9);
+            color: #fff;
+            opacity: 1;
+        }
+
+        .gallery-btn.prev { right: 10px; }
+        .gallery-btn.next { left: 10px; }
+
+        /* نقاط التنقل السفلية */
+        .gallery-dots {
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 6px;
+            z-index: 4;
+            background: rgba(11, 12, 16, 0.6);
+            padding: 4px 10px;
+            border-radius: 12px;
+            backdrop-filter: blur(4px);
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .dot.active {
+            background: var(--silver-light);
+            width: 18px;
+            border-radius: 4px;
         }
 
         .truck-content {
@@ -296,23 +367,20 @@
         /* السعر والطلب */
         .price-tag {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
             margin-bottom: 20px;
-        }
-
-        .price-label {
-            font-size: 0.85rem;
-            color: var(--text-muted);
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            border: 1px dashed var(--border-silver);
         }
 
         .price-value {
-            font-size: 1.3rem;
-            font-weight: 800;
-            color: #FFFFFF;
-            background: var(--gradient-silver);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--silver-light);
+            text-align: center;
         }
 
         .btn-whatsapp {
@@ -413,9 +481,25 @@
             <!-- 1. Mercedes-Benz Actros 2545  -->
             <div class="truck-card">
                 <span class="truck-badge">Mercedes</span>
-                <div class="truck-img-wrapper">
-                    <img src="https://i.postimg.cc/PrHFy4Gb/IMG-5262.jpg" alt="Mercedes Actros" class="truck-img">
+                
+                <!-- معرض الصور الـ 4 مع خاصية السحب بالأصبع -->
+                <div class="truck-gallery" data-index="0">
+                    <button class="gallery-btn prev" onclick="changeSlide(this, -1)"><i class="fa-solid fa-chevron-right"></i></button>
+                    <button class="gallery-btn next" onclick="changeSlide(this, 1)"><i class="fa-solid fa-chevron-left"></i></button>
+                    <div class="gallery-track">
+                        <div class="gallery-slide"><img src="https://i.postimg.cc/PrHFy4Gb/IMG-5262.jpg" alt="صورة 1"></div>
+                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80" alt="صورة 2"></div>
+                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1586191582056-a36c73295c51?auto=format&fit=crop&w=800&q=80" alt="صورة 3"></div>
+                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1591768793355-74d04bb6608f?auto=format&fit=crop&w=800&q=80" alt="صورة 4"></div>
+                    </div>
+                    <div class="gallery-dots">
+                        <span class="dot active" onclick="goToSlide(this, 0)"></span>
+                        <span class="dot" onclick="goToSlide(this, 1)"></span>
+                        <span class="dot" onclick="goToSlide(this, 2)"></span>
+                        <span class="dot" onclick="goToSlide(this, 3)"></span>
+                    </div>
                 </div>
+
                 <div class="truck-content">
                     <div>
                         <div class="truck-header">
@@ -427,17 +511,16 @@
                         <div class="specs-grid">
                             <div class="spec-item"><i class="fa-solid fa-gauge-high"></i> 450 حصان</div>
                             <div class="spec-item"><i class="fa-solid fa-gears"></i> أوتوماتيك</div>
-                            <div class="spec-item"><i class="fa-solid fa-truck-ramp-box"></i> حمولة - طن</div>
+                            <div class="spec-item"><i class="fa-solid fa-road"></i> ممشى السيارة: - كم</div>
                             <div class="spec-item"><i class="fa-solid fa-gas-pump"></i> ديزل</div>
                         </div>
                     </div>
 
                     <div>
                         <div class="price-tag">
-                            <span class="price-label">السعر :</span>
-                            <span class="price-value">$28,000</span>
+                            <span class="price-value">للإستفسار وطلب السعر تواصل معنا</span>
                         </div>
-                        <button class="btn-whatsapp" onclick="orderTruck('مرسيدس أكتيروس 2545 LS موديل 2016', '$28,000')">
+                        <button class="btn-whatsapp" onclick="orderTruck('مرسيدس أكتيروس 2545 LS موديل 2016')">
                             <i class="fa-brands fa-whatsapp"></i> اطلب الشاحنة عبر الواتساب
                         </button>
                     </div>
@@ -447,9 +530,24 @@
             <!-- 2. Volvo 460 -->
             <div class="truck-card">
                 <span class="truck-badge">Volvo</span>
-                <div class="truck-img-wrapper">
-                    <img src="https://i.postimg.cc/qMtdfwb9/659768ad-0dc8-4f1c-82ac-052842abe873.jpg" alt="Volvo 460" class="truck-img">
+                
+                <div class="truck-gallery" data-index="0">
+                    <button class="gallery-btn prev" onclick="changeSlide(this, -1)"><i class="fa-solid fa-chevron-right"></i></button>
+                    <button class="gallery-btn next" onclick="changeSlide(this, 1)"><i class="fa-solid fa-chevron-left"></i></button>
+                    <div class="gallery-track">
+                        <div class="gallery-slide"><img src="https://i.postimg.cc/qMtdfwb9/659768ad-0dc8-4f1c-82ac-052842abe873.jpg" alt="صورة 1"></div>
+                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1586191582056-a36c73295c51?auto=format&fit=crop&w=800&q=80" alt="صورة 2"></div>
+                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80" alt="صورة 3"></div>
+                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1591768793355-74d04bb6608f?auto=format&fit=crop&w=800&q=80" alt="صورة 4"></div>
+                    </div>
+                    <div class="gallery-dots">
+                        <span class="dot active" onclick="goToSlide(this, 0)"></span>
+                        <span class="dot" onclick="goToSlide(this, 1)"></span>
+                        <span class="dot" onclick="goToSlide(this, 2)"></span>
+                        <span class="dot" onclick="goToSlide(this, 3)"></span>
+                    </div>
                 </div>
+
                 <div class="truck-content">
                     <div>
                         <div class="truck-header">
@@ -461,17 +559,16 @@
                         <div class="specs-grid">
                             <div class="spec-item"><i class="fa-solid fa-gauge-high"></i> 460 حصان</div>
                             <div class="spec-item"><i class="fa-solid fa-gears"></i> ناقل I-Shift Crawler</div>
-                            <div class="spec-item"><i class="fa-solid fa-truck-ramp-box"></i> حمولة - طن</div>
+                            <div class="spec-item"><i class="fa-solid fa-road"></i> ممشى السيارة: - كم</div>
                             <div class="spec-item"><i class="fa-solid fa-shield-halved"></i> أنظمة أمان متطورة</div>
                         </div>
                     </div>
 
                     <div>
                         <div class="price-tag">
-                            <span class="price-label">السعر :</span>
-                            <span class="price-value">$30,000</span>
+                            <span class="price-value">للإستفسار وطلب السعر تواصل معنا</span>
                         </div>
-                        <button class="btn-whatsapp" onclick="orderTruck('فولفو 460 موديل 2023', '$30,000')">
+                        <button class="btn-whatsapp" onclick="orderTruck('فولفو 460 موديل 2023')">
                             <i class="fa-brands fa-whatsapp"></i> اطلب الشاحنة عبر الواتساب
                         </button>
                     </div>
@@ -481,9 +578,24 @@
             <!-- 3. MAN TGX 18.460 -->
             <div class="truck-card">
                 <span class="truck-badge">MAN</span>
-                <div class="truck-img-wrapper">
-                    <img src="https://i.postimg.cc/KcNw47bL/IMG-5251.jpg" alt="MAN TGX" class="truck-img">
+                
+                <div class="truck-gallery" data-index="0">
+                    <button class="gallery-btn prev" onclick="changeSlide(this, -1)"><i class="fa-solid fa-chevron-right"></i></button>
+                    <button class="gallery-btn next" onclick="changeSlide(this, 1)"><i class="fa-solid fa-chevron-left"></i></button>
+                    <div class="gallery-track">
+                        <div class="gallery-slide"><img src="https://i.postimg.cc/KcNw47bL/IMG-5251.jpg" alt="صورة 1"></div>
+                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1591768793355-74d04bb6608f?auto=format&fit=crop&w=800&q=80" alt="صورة 2"></div>
+                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80" alt="صورة 3"></div>
+                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1586191582056-a36c73295c51?auto=format&fit=crop&w=800&q=80" alt="صورة 4"></div>
+                    </div>
+                    <div class="gallery-dots">
+                        <span class="dot active" onclick="goToSlide(this, 0)"></span>
+                        <span class="dot" onclick="goToSlide(this, 1)"></span>
+                        <span class="dot" onclick="goToSlide(this, 2)"></span>
+                        <span class="dot" onclick="goToSlide(this, 3)"></span>
+                    </div>
                 </div>
+
                 <div class="truck-content">
                     <div>
                         <div class="truck-header">
@@ -495,17 +607,16 @@
                         <div class="specs-grid">
                             <div class="spec-item"><i class="fa-solid fa-gauge-high"></i> 460 حصان</div>
                             <div class="spec-item"><i class="fa-solid fa-gears"></i> ناقل -</div>
-                            <div class="spec-item"><i class="fa-solid fa-truck-ramp-box"></i> حمولة - طن</div>
+                            <div class="spec-item"><i class="fa-solid fa-road"></i> ممشى السيارة: - كم</div>
                             <div class="spec-item"><i class="fa-solid fa-leaf"></i> محرك اقتصادي</div>
                         </div>
                     </div>
 
                     <div>
                         <div class="price-tag">
-                            <span class="price-label">السعر :</span>
-                            <span class="price-value">$25,000</span>
+                            <span class="price-value">للإستفسار وطلب السعر تواصل معنا</span>
                         </div>
-                        <button class="btn-whatsapp" onclick="orderTruck('مان TGX 18.460 موديل 2016', '$25,000')">
+                        <button class="btn-whatsapp" onclick="orderTruck('مان TGX 18.460 موديل 2016')">
                             <i class="fa-brands fa-whatsapp"></i> اطلب الشاحنة عبر الواتساب
                         </button>
                     </div>
@@ -515,9 +626,24 @@
             <!-- 4. IVECO stralis 460 -->
             <div class="truck-card">
                 <span class="truck-badge">IVECO</span>
-                <div class="truck-img-wrapper">
-                    <img src="https://i.postimg.cc/15xZQ6kR/IMG-5261.jpg" alt="IVECO stralis" class="truck-img">
+                
+                <div class="truck-gallery" data-index="0">
+                    <button class="gallery-btn prev" onclick="changeSlide(this, -1)"><i class="fa-solid fa-chevron-right"></i></button>
+                    <button class="gallery-btn next" onclick="changeSlide(this, 1)"><i class="fa-solid fa-chevron-left"></i></button>
+                    <div class="gallery-track">
+                        <div class="gallery-slide"><img src="https://i.postimg.cc/15xZQ6kR/IMG-5261.jpg" alt="صورة 1"></div>
+                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80" alt="صورة 2"></div>
+                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1586191582056-a36c73295c51?auto=format&fit=crop&w=800&q=80" alt="صورة 3"></div>
+                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1591768793355-74d04bb6608f?auto=format&fit=crop&w=800&q=80" alt="صورة 4"></div>
+                    </div>
+                    <div class="gallery-dots">
+                        <span class="dot active" onclick="goToSlide(this, 0)"></span>
+                        <span class="dot" onclick="goToSlide(this, 1)"></span>
+                        <span class="dot" onclick="goToSlide(this, 2)"></span>
+                        <span class="dot" onclick="goToSlide(this, 3)"></span>
+                    </div>
                 </div>
+
                 <div class="truck-content">
                     <div>
                         <div class="truck-header">
@@ -529,31 +655,43 @@
                         <div class="specs-grid">
                             <div class="spec-item"><i class="fa-solid fa-gauge-high"></i> 460 حصان</div>
                             <div class="spec-item"><i class="fa-solid fa-gears"></i> ناقل -</div>
-                            <div class="spec-item"><i class="fa-solid fa-truck-ramp-box"></i> حمولة - طن</div>
+                            <div class="spec-item"><i class="fa-solid fa-road"></i> ممشى السيارة: - كم</div>
                             <div class="spec-item"><i class="fa-solid fa-wifi"></i> نظام اتصال ذكي</div>
                         </div>
                     </div>
 
                     <div>
                         <div class="price-tag">
-                            <span class="price-label">السعر :</span>
-                            <span class="price-value">$25,000</span>
+                            <span class="price-value">للإستفسار وطلب السعر تواصل معنا</span>
                         </div>
-                        <button class="btn-whatsapp" onclick="orderTruck('إيفيكو stralis 460 موديل 2018', '$25,000')">
+                        <button class="btn-whatsapp" onclick="orderTruck('إيفيكو stralis 460 موديل 2018')">
                             <i class="fa-brands fa-whatsapp"></i> اطلب الشاحنة عبر الواتساب
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- ==================== الشاحنات الإضافية (6 شاحنات جديدة) ==================== -->
-
             <!-- 5. Mercedes Actros MP4 -->
             <div class="truck-card">
                 <span class="truck-badge">Mercedes</span>
-                <div class="truck-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80" alt="Mercedes Actros MP4" class="truck-img">
+                
+                <div class="truck-gallery" data-index="0">
+                    <button class="gallery-btn prev" onclick="changeSlide(this, -1)"><i class="fa-solid fa-chevron-right"></i></button>
+                    <button class="gallery-btn next" onclick="changeSlide(this, 1)"><i class="fa-solid fa-chevron-left"></i></button>
+                    <div class="gallery-track">
+                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80" alt="صورة 1"></div>
+                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1586191582056-a36c73295c51?auto=format&fit=crop&w=800&q=80" alt="صورة 2"></div>
+                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1591768793355-74d04bb6608f?auto=format&fit=crop&w=800&q=80" alt="صورة 3"></div>
+                        <div class="gallery-slide"><img src="https://i.postimg.cc/PrHFy4Gb/IMG-5262.jpg" alt="صورة 4"></div>
+                    </div>
+                    <div class="gallery-dots">
+                        <span class="dot active" onclick="goToSlide(this, 0)"></span>
+                        <span class="dot" onclick="goToSlide(this, 1)"></span>
+                        <span class="dot" onclick="goToSlide(this, 2)"></span>
+                        <span class="dot" onclick="goToSlide(this, 3)"></span>
+                    </div>
                 </div>
+
                 <div class="truck-content">
                     <div>
                         <div class="truck-header">
@@ -565,17 +703,16 @@
                         <div class="specs-grid">
                             <div class="spec-item"><i class="fa-solid fa-gauge-high"></i> 480 حصان</div>
                             <div class="spec-item"><i class="fa-solid fa-gears"></i> أوتوماتيك PowerShift</div>
-                            <div class="spec-item"><i class="fa-solid fa-truck-ramp-box"></i> حمولة 18 طن</div>
+                            <div class="spec-item"><i class="fa-solid fa-road"></i> ممشى السيارة: - كم</div>
                             <div class="spec-item"><i class="fa-solid fa-gas-pump"></i> ديزل</div>
                         </div>
                     </div>
 
                     <div>
                         <div class="price-tag">
-                            <span class="price-label">السعر :</span>
-                            <span class="price-value">$32,000</span>
+                            <span class="price-value">للإستفسار وطلب السعر تواصل معنا</span>
                         </div>
-                        <button class="btn-whatsapp" onclick="orderTruck('مرسيدس أكتيروس MP4 موديل 2019', '$32,000')">
+                        <button class="btn-whatsapp" onclick="orderTruck('مرسيدس أكتيروس MP4 موديل 2019')">
                             <i class="fa-brands fa-whatsapp"></i> اطلب الشاحنة عبر الواتساب
                         </button>
                     </div>
@@ -585,9 +722,24 @@
             <!-- 6. Volvo FH16 -->
             <div class="truck-card">
                 <span class="truck-badge">Volvo</span>
-                <div class="truck-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1586191582056-a36c73295c51?auto=format&fit=crop&w=800&q=80" alt="Volvo FH16" class="truck-img">
+                
+                <div class="truck-gallery" data-index="0">
+                    <button class="gallery-btn prev" onclick="changeSlide(this, -1)"><i class="fa-solid fa-chevron-right"></i></button>
+                    <button class="gallery-btn next" onclick="changeSlide(this, 1)"><i class="fa-solid fa-chevron-left"></i></button>
+                    <div class="gallery-track">
+                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1586191582056-a36c73295c51?auto=format&fit=crop&w=800&q=80" alt="صورة 1"></div>
+                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80" alt="صورة 2"></div>
+                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1591768793355-74d04bb6608f?auto=format&fit=crop&w=800&q=80" alt="صورة 3"></div>
+                        <div class="gallery-slide"><img src="https://i.postimg.cc/qMtdfwb9/659768ad-0dc8-4f1c-82ac-052842abe873.jpg" alt="صورة 4"></div>
+                    </div>
+                    <div class="gallery-dots">
+                        <span class="dot active" onclick="goToSlide(this, 0)"></span>
+                        <span class="dot" onclick="goToSlide(this, 1)"></span>
+                        <span class="dot" onclick="goToSlide(this, 2)"></span>
+                        <span class="dot" onclick="goToSlide(this, 3)"></span>
+                    </div>
                 </div>
+
                 <div class="truck-content">
                     <div>
                         <div class="truck-header">
@@ -599,17 +751,16 @@
                         <div class="specs-grid">
                             <div class="spec-item"><i class="fa-solid fa-gauge-high"></i> 750 حصان</div>
                             <div class="spec-item"><i class="fa-solid fa-gears"></i> أوتوماتيك I-Shift</div>
-                            <div class="spec-item"><i class="fa-solid fa-truck-ramp-box"></i> حمولة ثقيلة جداً</div>
+                            <div class="spec-item"><i class="fa-solid fa-road"></i> ممشى السيارة: - كم</div>
                             <div class="spec-item"><i class="fa-solid fa-shield-halved"></i> نظام أمان متكامل</div>
                         </div>
                     </div>
 
                     <div>
                         <div class="price-tag">
-                            <span class="price-label">السعر :</span>
-                            <span class="price-value">$42,000</span>
+                            <span class="price-value">للإستفسار وطلب السعر تواصل معنا</span>
                         </div>
-                        <button class="btn-whatsapp" onclick="orderTruck('فولفو FH16 موديل 2021', '$42,000')">
+                        <button class="btn-whatsapp" onclick="orderTruck('فولفو FH16 موديل 2021')">
                             <i class="fa-brands fa-whatsapp"></i> اطلب الشاحنة عبر الواتساب
                         </button>
                     </div>
@@ -619,9 +770,24 @@
             <!-- 7. Scania S500 -->
             <div class="truck-card">
                 <span class="truck-badge">Scania</span>
-                <div class="truck-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1591768793355-74d04bb6608f?auto=format&fit=crop&w=800&q=80" alt="Scania S500" class="truck-img">
+                
+                <div class="truck-gallery" data-index="0">
+                    <button class="gallery-btn prev" onclick="changeSlide(this, -1)"><i class="fa-solid fa-chevron-right"></i></button>
+                    <button class="gallery-btn next" onclick="changeSlide(this, 1)"><i class="fa-solid fa-chevron-left"></i></button>
+                    <div class="gallery-track">
+                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1591768793355-74d04bb6608f?auto=format&fit=crop&w=800&q=80" alt="صورة 1"></div>
+                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80" alt="صورة 2"></div>
+                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1586191582056-a36c73295c51?auto=format&fit=crop&w=800&q=80" alt="صورة 3"></div>
+                        <div class="gallery-slide"><img src="https://i.postimg.cc/PrHFy4Gb/IMG-5262.jpg" alt="صورة 4"></div>
+                    </div>
+                    <div class="gallery-dots">
+                        <span class="dot active" onclick="goToSlide(this, 0)"></span>
+                        <span class="dot" onclick="goToSlide(this, 1)"></span>
+                        <span class="dot" onclick="goToSlide(this, 2)"></span>
+                        <span class="dot" onclick="goToSlide(this, 3)"></span>
+                    </div>
                 </div>
+
                 <div class="truck-content">
                     <div>
                         <div class="truck-header">
@@ -633,17 +799,16 @@
                         <div class="specs-grid">
                             <div class="spec-item"><i class="fa-solid fa-gauge-high"></i> 500 حصان</div>
                             <div class="spec-item"><i class="fa-solid fa-gears"></i> Opticruise أوتوماتيك</div>
-                            <div class="spec-item"><i class="fa-solid fa-truck-ramp-box"></i> حمولة 20 طن</div>
+                            <div class="spec-item"><i class="fa-solid fa-road"></i> ممشى السيارة: - كم</div>
                             <div class="spec-item"><i class="fa-solid fa-gas-pump"></i> ديزل Euro 6</div>
                         </div>
                     </div>
 
                     <div>
                         <div class="price-tag">
-                            <span class="price-label">السعر :</span>
-                            <span class="price-value">$35,000</span>
+                            <span class="price-value">للإستفسار وطلب السعر تواصل معنا</span>
                         </div>
-                        <button class="btn-whatsapp" onclick="orderTruck('سكانيا S500 موديل 2020', '$35,000')">
+                        <button class="btn-whatsapp" onclick="orderTruck('سكانيا S500 موديل 2020')">
                             <i class="fa-brands fa-whatsapp"></i> اطلب الشاحنة عبر الواتساب
                         </button>
                     </div>
@@ -653,9 +818,24 @@
             <!-- 8. DAF XF 530 -->
             <div class="truck-card">
                 <span class="truck-badge">DAF</span>
-                <div class="truck-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80" alt="DAF XF 530" class="truck-img">
+                
+                <div class="truck-gallery" data-index="0">
+                    <button class="gallery-btn prev" onclick="changeSlide(this, -1)"><i class="fa-solid fa-chevron-right"></i></button>
+                    <button class="gallery-btn next" onclick="changeSlide(this, 1)"><i class="fa-solid fa-chevron-left"></i></button>
+                    <div class="gallery-track">
+                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80" alt="صورة 1"></div>
+                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1591768793355-74d04bb6608f?auto=format&fit=crop&w=800&q=80" alt="صورة 2"></div>
+                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1586191582056-a36c73295c51?auto=format&fit=crop&w=800&q=80" alt="صورة 3"></div>
+                        <div class="gallery-slide"><img src="https://i.postimg.cc/KcNw47bL/IMG-5251.jpg" alt="صورة 4"></div>
+                    </div>
+                    <div class="gallery-dots">
+                        <span class="dot active" onclick="goToSlide(this, 0)"></span>
+                        <span class="dot" onclick="goToSlide(this, 1)"></span>
+                        <span class="dot" onclick="goToSlide(this, 2)"></span>
+                        <span class="dot" onclick="goToSlide(this, 3)"></span>
+                    </div>
                 </div>
+
                 <div class="truck-content">
                     <div>
                         <div class="truck-header">
@@ -667,17 +847,16 @@
                         <div class="specs-grid">
                             <div class="spec-item"><i class="fa-solid fa-gauge-high"></i> 530 حصان</div>
                             <div class="spec-item"><i class="fa-solid fa-gears"></i> TraXon أوتوماتيك</div>
-                            <div class="spec-item"><i class="fa-solid fa-truck-ramp-box"></i> حمولة 19 طن</div>
+                            <div class="spec-item"><i class="fa-solid fa-road"></i> ممشى السيارة: - كم</div>
                             <div class="spec-item"><i class="fa-solid fa-leaf"></i> صديقة للبيئة</div>
                         </div>
                     </div>
 
                     <div>
                         <div class="price-tag">
-                            <span class="price-label">السعر :</span>
-                            <span class="price-value">$34,000</span>
+                            <span class="price-value">للإستفسار وطلب السعر تواصل معنا</span>
                         </div>
-                        <button class="btn-whatsapp" onclick="orderTruck('داف XF 530 موديل 2022', '$34,000')">
+                        <button class="btn-whatsapp" onclick="orderTruck('داف XF 530 موديل 2022')">
                             <i class="fa-brands fa-whatsapp"></i> اطلب الشاحنة عبر الواتساب
                         </button>
                     </div>
@@ -687,9 +866,24 @@
             <!-- 9. MAN TGM 18.290 -->
             <div class="truck-card">
                 <span class="truck-badge">MAN</span>
-                <div class="truck-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1586191582056-a36c73295c51?auto=format&fit=crop&w=800&q=80" alt="MAN TGM" class="truck-img">
+                
+                <div class="truck-gallery" data-index="0">
+                    <button class="gallery-btn prev" onclick="changeSlide(this, -1)"><i class="fa-solid fa-chevron-right"></i></button>
+                    <button class="gallery-btn next" onclick="changeSlide(this, 1)"><i class="fa-solid fa-chevron-left"></i></button>
+                    <div class="gallery-track">
+                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1586191582056-a36c73295c51?auto=format&fit=crop&w=800&q=80" alt="صورة 1"></div>
+                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80" alt="صورة 2"></div>
+                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1591768793355-74d04bb6608f?auto=format&fit=crop&w=800&q=80" alt="صورة 3"></div>
+                        <div class="gallery-slide"><img src="https://i.postimg.cc/15xZQ6kR/IMG-5261.jpg" alt="صورة 4"></div>
+                    </div>
+                    <div class="gallery-dots">
+                        <span class="dot active" onclick="goToSlide(this, 0)"></span>
+                        <span class="dot" onclick="goToSlide(this, 1)"></span>
+                        <span class="dot" onclick="goToSlide(this, 2)"></span>
+                        <span class="dot" onclick="goToSlide(this, 3)"></span>
+                    </div>
                 </div>
+
                 <div class="truck-content">
                     <div>
                         <div class="truck-header">
@@ -701,17 +895,16 @@
                         <div class="specs-grid">
                             <div class="spec-item"><i class="fa-solid fa-gauge-high"></i> 290 حصان</div>
                             <div class="spec-item"><i class="fa-solid fa-gears"></i> مانيوال / أوتوماتيك</div>
-                            <div class="spec-item"><i class="fa-solid fa-truck-ramp-box"></i> حمولة 12 طن</div>
+                            <div class="spec-item"><i class="fa-solid fa-road"></i> ممشى السيارة: - كم</div>
                             <div class="spec-item"><i class="fa-solid fa-gas-pump"></i> ديزل</div>
                         </div>
                     </div>
 
                     <div>
                         <div class="price-tag">
-                            <span class="price-label">السعر :</span>
-                            <span class="price-value">$21,000</span>
+                            <span class="price-value">للإستفسار وطلب السعر تواصل معنا</span>
                         </div>
-                        <button class="btn-whatsapp" onclick="orderTruck('مان TGM 18.290 موديل 2017', '$21,000')">
+                        <button class="btn-whatsapp" onclick="orderTruck('مان TGM 18.290 موديل 2017')">
                             <i class="fa-brands fa-whatsapp"></i> اطلب الشاحنة عبر الواتساب
                         </button>
                     </div>
@@ -721,9 +914,24 @@
             <!-- 10. Renault T High 520 -->
             <div class="truck-card">
                 <span class="truck-badge">Renault</span>
-                <div class="truck-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1591768793355-74d04bb6608f?auto=format&fit=crop&w=800&q=80" alt="Renault T High" class="truck-img">
+                
+                <div class="truck-gallery" data-index="0">
+                    <button class="gallery-btn prev" onclick="changeSlide(this, -1)"><i class="fa-solid fa-chevron-right"></i></button>
+                    <button class="gallery-btn next" onclick="changeSlide(this, 1)"><i class="fa-solid fa-chevron-left"></i></button>
+                    <div class="gallery-track">
+                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1591768793355-74d04bb6608f?auto=format&fit=crop&w=800&q=80" alt="صورة 1"></div>
+                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80" alt="صورة 2"></div>
+                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1586191582056-a36c73295c51?auto=format&fit=crop&w=800&q=80" alt="صورة 3"></div>
+                        <div class="gallery-slide"><img src="https://i.postimg.cc/PrHFy4Gb/IMG-5262.jpg" alt="صورة 4"></div>
+                    </div>
+                    <div class="gallery-dots">
+                        <span class="dot active" onclick="goToSlide(this, 0)"></span>
+                        <span class="dot" onclick="goToSlide(this, 1)"></span>
+                        <span class="dot" onclick="goToSlide(this, 2)"></span>
+                        <span class="dot" onclick="goToSlide(this, 3)"></span>
+                    </div>
                 </div>
+
                 <div class="truck-content">
                     <div>
                         <div class="truck-header">
@@ -735,17 +943,16 @@
                         <div class="specs-grid">
                             <div class="spec-item"><i class="fa-solid fa-gauge-high"></i> 520 حصان</div>
                             <div class="spec-item"><i class="fa-solid fa-gears"></i> Optidriver أوتوماتيك</div>
-                            <div class="spec-item"><i class="fa-solid fa-truck-ramp-box"></i> حمولة 18 طن</div>
+                            <div class="spec-item"><i class="fa-solid fa-road"></i> ممشى السيارة: - كم</div>
                             <div class="spec-item"><i class="fa-solid fa-gas-pump"></i> ديزل</div>
                         </div>
                     </div>
 
                     <div>
                         <div class="price-tag">
-                            <span class="price-label">السعر :</span>
-                            <span class="price-value">$26,500</span>
+                            <span class="price-value">للإستفسار وطلب السعر تواصل معنا</span>
                         </div>
-                        <button class="btn-whatsapp" onclick="orderTruck('رينو T High موديل 2020', '$26,500')">
+                        <button class="btn-whatsapp" onclick="orderTruck('رينو T High موديل 2020')">
                             <i class="fa-brands fa-whatsapp"></i> اطلب الشاحنة عبر الواتساب
                         </button>
                     </div>
@@ -766,20 +973,83 @@
         </div>
     </footer>
 
-    <!-- JavaScript المخصص لإرسال تفاصيل الشاحنة عبر الواتساب -->
+    <!-- JavaScript المخصص لمعرض الصور والسحب والتواصل -->
     <script>
-        // ضع رقم الواتساب الخاص بك هنا (مباشرة مع رمز الدولة بدون + أو أصفار)
         const whatsappNumber = "963940364066"; 
 
-        function orderTruck(modelName, price) {
-            const message = `السلام عليكم ورحمة الله،\nأود الاستفسار عن الشاحنة التالية المعلن عنها في الموقع:\n\n🚛 *الشاحنة:* ${modelName}\n💰 *السعر المعلن:* ${price}\n\nيرجى تزويدي بتفاصيل الشحن والإجراءات.`;
-            
+        function orderTruck(modelName) {
+            const message = `السلام عليكم ورحمة الله،\nأود الاستفسار عن السعر للشاحنة التالية المعلن عنها في الموقع:\n\n🚛 *الشاحنة:* ${modelName}\n❓ *الطلب:* الاستفسار عن السعر وباقي التفاصيل.\n\nيرجى تزويدي بالمعلومات والأسعار والإجراءات المتبعة.`;
             const encodedMessage = encodeURIComponent(message);
-            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
-            
-            // فتح تطبيق الواتساب في نافذة جديدة
-            window.open(whatsappUrl, '_blank');
+            window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, '_blank');
         }
+
+        // تحديث المعرض وموقعه
+        function updateGallery(gallery, index) {
+            const track = gallery.querySelector('.gallery-track');
+            const slides = gallery.querySelectorAll('.gallery-slide');
+            const dots = gallery.querySelectorAll('.dot');
+            const total = slides.length;
+
+            if (index >= total) index = 0;
+            if (index < 0) index = total - 1;
+
+            gallery.setAttribute('data-index', index);
+            track.style.transform = `translateX(${index * 100}%)`;
+
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+        }
+
+        function changeSlide(btn, direction) {
+            const gallery = btn.closest('.truck-gallery');
+            let currentIndex = parseInt(gallery.getAttribute('data-index')) || 0;
+            updateGallery(gallery, currentIndex + direction);
+        }
+
+        function goToSlide(dot, index) {
+            const gallery = dot.closest('.truck-gallery');
+            updateGallery(gallery, index);
+        }
+
+        // إضافة دعم اللمس وسحب الأصبع (Swipe)
+        document.querySelectorAll('.truck-gallery').forEach(gallery => {
+            let startX = 0;
+            let currentX = 0;
+            let isDragging = false;
+
+            gallery.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                isDragging = true;
+            }, { passive: true });
+
+            gallery.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                currentX = e.touches[0].clientX;
+            }, { passive: true });
+
+            gallery.addEventListener('touchend', () => {
+                if (!isDragging) return;
+                let diffX = startX - currentX;
+                let currentIndex = parseInt(gallery.getAttribute('data-index')) || 0;
+
+                // إذا كان الفرق أكبر من 40px نعتبرها عملية سحب
+                if (Math.abs(diffX) > 40 && currentX !== 0) {
+                    if (diffX < 0) {
+                        // سحب لليمين (الصورة التالية بـ RTL)
+                        updateGallery(gallery, currentIndex - 1);
+                    } else {
+                        // سحب لليسار (الصورة السابقة بـ RTL)
+                        updateGallery(gallery, currentIndex + 1);
+                    }
+                }
+                
+                // إعادة ضبط المتغيرات
+                isDragging = false;
+                startX = 0;
+                currentX = 0;
+            });
+        });
     </script>
 
 </body>
