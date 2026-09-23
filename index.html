@@ -240,13 +240,19 @@
             min-width: 100%;
             height: 100%;
             user-select: none;
+            cursor: pointer;
         }
 
         .gallery-slide img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            pointer-events: none;
+            pointer-events: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-slide:hover img {
+            transform: scale(1.03);
         }
 
         /* أسهم التنقل */
@@ -406,6 +412,71 @@
             box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
         }
 
+        /* تنسيقات النافذة المنبثقة (Modal / Lightbox) لعرض الصورة الكاملة */
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(8px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .image-modal.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-img-container {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-img-container img {
+            max-width: 90vw;
+            max-height: 85vh;
+            object-fit: contain;
+            border-radius: 8px;
+            border: 1px solid var(--border-silver);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            color: #FFFFFF;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 2001;
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-close-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.1);
+        }
+
         /* الفوتر Footer */
         footer {
             background: #050608;
@@ -431,6 +502,7 @@
             .hero-stats { gap: 20px; }
             nav { display: none; }
             .footer-content { flex-direction: column; text-align: center; }
+            .modal-close-btn { top: 15px; right: 15px; width: 40px; height: 40px; font-size: 28px; }
         }
     </style>
 </head>
@@ -478,7 +550,7 @@
         <h2 class="section-title">الشاحنات المتاحة للطلب</h2>
         <div class="grid">
 
-            <!-- 1. Mercedes-Benz Actros 2545  -->
+            <!-- 1. Mercedes-Benz Actros -->
             <div class="truck-card">
                 <span class="truck-badge">Mercedes</span>
                 
@@ -487,10 +559,10 @@
                     <button class="gallery-btn prev" onclick="changeSlide(this, -1)"><i class="fa-solid fa-chevron-right"></i></button>
                     <button class="gallery-btn next" onclick="changeSlide(this, 1)"><i class="fa-solid fa-chevron-left"></i></button>
                     <div class="gallery-track">
-                        <div class="gallery-slide"><img src="https://i.postimg.cc/PrHFy4Gb/IMG-5262.jpg" alt="صورة 1"></div>
-                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80" alt="صورة 2"></div>
-                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1586191582056-a36c73295c51?auto=format&fit=crop&w=800&q=80" alt="صورة 3"></div>
-                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1591768793355-74d04bb6608f?auto=format&fit=crop&w=800&q=80" alt="صورة 4"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://i.postimg.cc/PrHFy4Gb/IMG-5262.jpg" alt="صورة 1"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80" alt="صورة 2"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://images.unsplash.com/photo-1586191582056-a36c73295c51?auto=format&fit=crop&w=800&q=80" alt="صورة 3"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://images.unsplash.com/photo-1591768793355-74d04bb6608f?auto=format&fit=crop&w=800&q=80" alt="صورة 4"></div>
                     </div>
                     <div class="gallery-dots">
                         <span class="dot active" onclick="goToSlide(this, 0)"></span>
@@ -504,7 +576,7 @@
                     <div>
                         <div class="truck-header">
                             <h3 class="truck-title">مرسيدس أكتيروس (Actros)</h3>
-                            <div class="truck-subtitle">موديل: 2016 | طراز 2545</div>
+                            <div class="truck-subtitle">موديل: 2016</div>
                         </div>
                         <p class="truck-desc">شاحنة النقل الثقيل الأكثر اعتمادية عالمياً، مجهزة بأحدث تقنيات الراحة والسلامة.</p>
                         
@@ -520,7 +592,7 @@
                         <div class="price-tag">
                             <span class="price-value">للإستفسار وطلب السعر تواصل معنا</span>
                         </div>
-                        <button class="btn-whatsapp" onclick="orderTruck('مرسيدس أكتيروس 2545 LS موديل 2016')">
+                        <button class="btn-whatsapp" onclick="orderTruck('مرسيدس أكتيروس موديل 2016')">
                             <i class="fa-brands fa-whatsapp"></i> اطلب الشاحنة عبر الواتساب
                         </button>
                     </div>
@@ -535,10 +607,10 @@
                     <button class="gallery-btn prev" onclick="changeSlide(this, -1)"><i class="fa-solid fa-chevron-right"></i></button>
                     <button class="gallery-btn next" onclick="changeSlide(this, 1)"><i class="fa-solid fa-chevron-left"></i></button>
                     <div class="gallery-track">
-                        <div class="gallery-slide"><img src="https://i.postimg.cc/qMtdfwb9/659768ad-0dc8-4f1c-82ac-052842abe873.jpg" alt="صورة 1"></div>
-                        <div class="gallery-slide"><img src="https://i.postimg.cc/yxDfH2n5/304cb841-5ac2-447b-8e7b-359ba3e904b6.jpg" alt="صورة 2"></div>
-                        <div class="gallery-slide"><img src="https://i.postimg.cc/j2nh9Pd9/ee13ffb3-bc1a-49c7-9bf6-f8dbf543deec.jpg" alt="صورة 3"></div>
-                        <div class="gallery-slide"><img src="https://i.postimg.cc/x12WvT6y/277a3174-c973-44b7-b8ef-dbb2f2688273.jpg" alt="صورة 4"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://i.postimg.cc/qMtdfwb9/659768ad-0dc8-4f1c-82ac-052842abe873.jpg" alt="صورة 1"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://i.postimg.cc/yxDfH2n5/304cb841-5ac2-447b-8e7b-359ba3e904b6.jpg" alt="صورة 2"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://i.postimg.cc/j2nh9Pd9/ee13ffb3-bc1a-49c7-9bf6-f8dbf543deec.jpg" alt="صورة 3"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://i.postimg.cc/x12WvT6y/277a3174-c973-44b7-b8ef-dbb2f2688273.jpg" alt="صورة 4"></div>
                     </div>
                     <div class="gallery-dots">
                         <span class="dot active" onclick="goToSlide(this, 0)"></span>
@@ -552,7 +624,7 @@
                     <div>
                         <div class="truck-header">
                             <h3 class="truck-title">فولفو (Volvo 460)</h3>
-                            <div class="truck-subtitle">موديل: 2023 | طراز 460</div>
+                            <div class="truck-subtitle">موديل: 2023</div>
                         </div>
                         <p class="truck-desc">قمة الأداء والقوة والأمان. أعتى محرك في الفئة الثقيلة مخصص للمهمات الصعبة والنقل الدولي الشاق.</p>
                         
@@ -575,7 +647,7 @@
                 </div>
             </div>
 
-            <!-- 3. MAN TGX 18.460 -->
+            <!-- 3. MAN TGX -->
             <div class="truck-card">
                 <span class="truck-badge">MAN</span>
                 
@@ -583,10 +655,10 @@
                     <button class="gallery-btn prev" onclick="changeSlide(this, -1)"><i class="fa-solid fa-chevron-right"></i></button>
                     <button class="gallery-btn next" onclick="changeSlide(this, 1)"><i class="fa-solid fa-chevron-left"></i></button>
                     <div class="gallery-track">
-                        <div class="gallery-slide"><img src="https://i.postimg.cc/KcNw47bL/IMG-5251.jpg" alt="صورة 1"></div>
-                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1591768793355-74d04bb6608f?auto=format&fit=crop&w=800&q=80" alt="صورة 2"></div>
-                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80" alt="صورة 3"></div>
-                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1586191582056-a36c73295c51?auto=format&fit=crop&w=800&q=80" alt="صورة 4"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://i.postimg.cc/KcNw47bL/IMG-5251.jpg" alt="صورة 1"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://images.unsplash.com/photo-1591768793355-74d04bb6608f?auto=format&fit=crop&w=800&q=80" alt="صورة 2"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80" alt="صورة 3"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://images.unsplash.com/photo-1586191582056-a36c73295c51?auto=format&fit=crop&w=800&q=80" alt="صورة 4"></div>
                     </div>
                     <div class="gallery-dots">
                         <span class="dot active" onclick="goToSlide(this, 0)"></span>
@@ -600,7 +672,7 @@
                     <div>
                         <div class="truck-header">
                             <h3 class="truck-title">مان (MAN TGX)</h3>
-                            <div class="truck-subtitle">موديل: 2016 | طراز TGX 18.460</div>
+                            <div class="truck-subtitle">موديل: 2016</div>
                         </div>
                         <p class="truck-desc">الهندسة الألمانية المتطورة مع كابينة واسعة جداً واقتصاد استثنائي في استهلاك الوقود للخطوط الطويلة.</p>
                         
@@ -616,14 +688,14 @@
                         <div class="price-tag">
                             <span class="price-value">للإستفسار وطلب السعر تواصل معنا</span>
                         </div>
-                        <button class="btn-whatsapp" onclick="orderTruck('مان TGX 18.460 موديل 2016')">
+                        <button class="btn-whatsapp" onclick="orderTruck('مان TGX موديل 2016')">
                             <i class="fa-brands fa-whatsapp"></i> اطلب الشاحنة عبر الواتساب
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- 4. IVECO stralis 460 -->
+            <!-- 4. IVECO stralis -->
             <div class="truck-card">
                 <span class="truck-badge">IVECO</span>
                 
@@ -631,10 +703,10 @@
                     <button class="gallery-btn prev" onclick="changeSlide(this, -1)"><i class="fa-solid fa-chevron-right"></i></button>
                     <button class="gallery-btn next" onclick="changeSlide(this, 1)"><i class="fa-solid fa-chevron-left"></i></button>
                     <div class="gallery-track">
-                        <div class="gallery-slide"><img src="https://i.postimg.cc/15xZQ6kR/IMG-5261.jpg" alt="صورة 1"></div>
-                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80" alt="صورة 2"></div>
-                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1586191582056-a36c73295c51?auto=format&fit=crop&w=800&q=80" alt="صورة 3"></div>
-                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1591768793355-74d04bb6608f?auto=format&fit=crop&w=800&q=80" alt="صورة 4"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://i.postimg.cc/15xZQ6kR/IMG-5261.jpg" alt="صورة 1"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80" alt="صورة 2"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://images.unsplash.com/photo-1586191582056-a36c73295c51?auto=format&fit=crop&w=800&q=80" alt="صورة 3"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://images.unsplash.com/photo-1591768793355-74d04bb6608f?auto=format&fit=crop&w=800&q=80" alt="صورة 4"></div>
                     </div>
                     <div class="gallery-dots">
                         <span class="dot active" onclick="goToSlide(this, 0)"></span>
@@ -648,7 +720,7 @@
                     <div>
                         <div class="truck-header">
                             <h3 class="truck-title">إيفيكو (IVECO stralis)</h3>
-                            <div class="truck-subtitle">موديل: 2018 | طراز stralis 460</div>
+                            <div class="truck-subtitle">موديل: 2018</div>
                         </div>
                         <p class="truck-desc">تصميم إيطالي انسيابي وعصري للغاية، يوفر أقصى درجات التكيف والراحة أثناء القيادة.</p>
                         
@@ -664,7 +736,7 @@
                         <div class="price-tag">
                             <span class="price-value">للإستفسار وطلب السعر تواصل معنا</span>
                         </div>
-                        <button class="btn-whatsapp" onclick="orderTruck('إيفيكو stralis 460 موديل 2018')">
+                        <button class="btn-whatsapp" onclick="orderTruck('إيفيكو stralis موديل 2018')">
                             <i class="fa-brands fa-whatsapp"></i> اطلب الشاحنة عبر الواتساب
                         </button>
                     </div>
@@ -679,10 +751,10 @@
                     <button class="gallery-btn prev" onclick="changeSlide(this, -1)"><i class="fa-solid fa-chevron-right"></i></button>
                     <button class="gallery-btn next" onclick="changeSlide(this, 1)"><i class="fa-solid fa-chevron-left"></i></button>
                     <div class="gallery-track">
-                        <div class="gallery-slide"><img src="https://i.postimg.cc/sXxFM6TF/fa4d2d6c-3e4c-48e3-8d31-fd18bf12708f.jpg" alt="صورة 1"></div>
-                        <div class="gallery-slide"><img src="https://i.postimg.cc/kXXjq6Yp/IMG-5279.jpg" alt="صورة 2"></div>
-                        <div class="gallery-slide"><img src="https://i.postimg.cc/g06SQCtW/IMG-5282.jpg" alt="صورة 3"></div>
-                        <div class="gallery-slide"><img src="https://i.postimg.cc/C17jQJ01/IMG-5281.jpg" alt="صورة 4"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://i.postimg.cc/sXxFM6TF/fa4d2d6c-3e4c-48e3-8d31-fd18bf12708f.jpg" alt="صورة 1"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://i.postimg.cc/kXXjq6Yp/IMG-5279.jpg" alt="صورة 2"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://i.postimg.cc/g06SQCtW/IMG-5282.jpg" alt="صورة 3"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://i.postimg.cc/C17jQJ01/IMG-5281.jpg" alt="صورة 4"></div>
                     </div>
                     <div class="gallery-dots">
                         <span class="dot active" onclick="goToSlide(this, 0)"></span>
@@ -696,7 +768,7 @@
                     <div>
                         <div class="truck-header">
                             <h3 class="truck-title">رينو T460</h3>
-                            <div class="truck-subtitle">موديل: 2016 | طراز 1848</div>
+                            <div class="truck-subtitle">موديل: 2016</div>
                         </div>
                         <p class="truck-desc">شاحنة ممتازة للمسافات الطويلة مع أنظمة مساعدة السائق الحديثة وكفاءة عالية في استهلاك الوقود.</p>
                         
@@ -712,7 +784,7 @@
                         <div class="price-tag">
                             <span class="price-value">للإستفسار وطلب السعر تواصل معنا</span>
                         </div>
-                        <button class="btn-whatsapp" onclick="orderTruck('رينو T460  موديل 2016')">
+                        <button class="btn-whatsapp" onclick="orderTruck('رينو T460 موديل 2016')">
                             <i class="fa-brands fa-whatsapp"></i> اطلب الشاحنة عبر الواتساب
                         </button>
                     </div>
@@ -727,10 +799,10 @@
                     <button class="gallery-btn prev" onclick="changeSlide(this, -1)"><i class="fa-solid fa-chevron-right"></i></button>
                     <button class="gallery-btn next" onclick="changeSlide(this, 1)"><i class="fa-solid fa-chevron-left"></i></button>
                     <div class="gallery-track">
-                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1586191582056-a36c73295c51?auto=format&fit=crop&w=800&q=80" alt="صورة 1"></div>
-                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80" alt="صورة 2"></div>
-                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1591768793355-74d04bb6608f?auto=format&fit=crop&w=800&q=80" alt="صورة 3"></div>
-                        <div class="gallery-slide"><img src="https://i.postimg.cc/qMtdfwb9/659768ad-0dc8-4f1c-82ac-052842abe873.jpg" alt="صورة 4"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://images.unsplash.com/photo-1586191582056-a36c73295c51?auto=format&fit=crop&w=800&q=80" alt="صورة 1"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80" alt="صورة 2"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://images.unsplash.com/photo-1591768793355-74d04bb6608f?auto=format&fit=crop&w=800&q=80" alt="صورة 3"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://i.postimg.cc/qMtdfwb9/659768ad-0dc8-4f1c-82ac-052842abe873.jpg" alt="صورة 4"></div>
                     </div>
                     <div class="gallery-dots">
                         <span class="dot active" onclick="goToSlide(this, 0)"></span>
@@ -744,7 +816,7 @@
                     <div>
                         <div class="truck-header">
                             <h3 class="truck-title">فولفو (Volvo FH16)</h3>
-                            <div class="truck-subtitle">موديل: 2021 | طراز 750</div>
+                            <div class="truck-subtitle">موديل: 2021</div>
                         </div>
                         <p class="truck-desc">أقوى شاحنة للقيادة الصعبة والأحمال الفائقة. محرك قوي جداً وتجهيزات فارهة لكابينة السائق.</p>
                         
@@ -775,10 +847,10 @@
                     <button class="gallery-btn prev" onclick="changeSlide(this, -1)"><i class="fa-solid fa-chevron-right"></i></button>
                     <button class="gallery-btn next" onclick="changeSlide(this, 1)"><i class="fa-solid fa-chevron-left"></i></button>
                     <div class="gallery-track">
-                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1591768793355-74d04bb6608f?auto=format&fit=crop&w=800&q=80" alt="صورة 1"></div>
-                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80" alt="صورة 2"></div>
-                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1586191582056-a36c73295c51?auto=format&fit=crop&w=800&q=80" alt="صورة 3"></div>
-                        <div class="gallery-slide"><img src="https://i.postimg.cc/PrHFy4Gb/IMG-5262.jpg" alt="صورة 4"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://images.unsplash.com/photo-1591768793355-74d04bb6608f?auto=format&fit=crop&w=800&q=80" alt="صورة 1"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80" alt="صورة 2"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://images.unsplash.com/photo-1586191582056-a36c73295c51?auto=format&fit=crop&w=800&q=80" alt="صورة 3"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://i.postimg.cc/PrHFy4Gb/IMG-5262.jpg" alt="صورة 4"></div>
                     </div>
                     <div class="gallery-dots">
                         <span class="dot active" onclick="goToSlide(this, 0)"></span>
@@ -792,7 +864,7 @@
                     <div>
                         <div class="truck-header">
                             <h3 class="truck-title">سكانيا (Scania S500)</h3>
-                            <div class="truck-subtitle">موديل: 2020 | طراز S500 V8</div>
+                            <div class="truck-subtitle">موديل: 2020</div>
                         </div>
                         <p class="truck-desc">فخامة وتصميم حديث كلياً مع كابينة أرضية مسطحة توفر أقصى درجات الراحة في السفر الطويل.</p>
                         
@@ -823,10 +895,10 @@
                     <button class="gallery-btn prev" onclick="changeSlide(this, -1)"><i class="fa-solid fa-chevron-right"></i></button>
                     <button class="gallery-btn next" onclick="changeSlide(this, 1)"><i class="fa-solid fa-chevron-left"></i></button>
                     <div class="gallery-track">
-                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80" alt="صورة 1"></div>
-                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1591768793355-74d04bb6608f?auto=format&fit=crop&w=800&q=80" alt="صورة 2"></div>
-                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1586191582056-a36c73295c51?auto=format&fit=crop&w=800&q=80" alt="صورة 3"></div>
-                        <div class="gallery-slide"><img src="https://i.postimg.cc/KcNw47bL/IMG-5251.jpg" alt="صورة 4"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80" alt="صورة 1"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://images.unsplash.com/photo-1591768793355-74d04bb6608f?auto=format&fit=crop&w=800&q=80" alt="صورة 2"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://images.unsplash.com/photo-1586191582056-a36c73295c51?auto=format&fit=crop&w=800&q=80" alt="صورة 3"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://i.postimg.cc/KcNw47bL/IMG-5251.jpg" alt="صورة 4"></div>
                     </div>
                     <div class="gallery-dots">
                         <span class="dot active" onclick="goToSlide(this, 0)"></span>
@@ -840,7 +912,7 @@
                     <div>
                         <div class="truck-header">
                             <h3 class="truck-title">داف (DAF XF 530)</h3>
-                            <div class="truck-subtitle">موديل: 2022 | طراز Super Space Cab</div>
+                            <div class="truck-subtitle">موديل: 2022</div>
                         </div>
                         <p class="truck-desc">شاحنة هولندية تتميز بالاعتمادية العالية وأكبر مساحة داخلية للكبينة في فئتها.</p>
                         
@@ -863,7 +935,7 @@
                 </div>
             </div>
 
-            <!-- 9. MAN TGM 18.290 -->
+            <!-- 9. MAN TGM -->
             <div class="truck-card">
                 <span class="truck-badge">MAN</span>
                 
@@ -871,10 +943,10 @@
                     <button class="gallery-btn prev" onclick="changeSlide(this, -1)"><i class="fa-solid fa-chevron-right"></i></button>
                     <button class="gallery-btn next" onclick="changeSlide(this, 1)"><i class="fa-solid fa-chevron-left"></i></button>
                     <div class="gallery-track">
-                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1586191582056-a36c73295c51?auto=format&fit=crop&w=800&q=80" alt="صورة 1"></div>
-                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80" alt="صورة 2"></div>
-                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1591768793355-74d04bb6608f?auto=format&fit=crop&w=800&q=80" alt="صورة 3"></div>
-                        <div class="gallery-slide"><img src="https://i.postimg.cc/15xZQ6kR/IMG-5261.jpg" alt="صورة 4"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://images.unsplash.com/photo-1586191582056-a36c73295c51?auto=format&fit=crop&w=800&q=80" alt="صورة 1"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80" alt="صورة 2"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://images.unsplash.com/photo-1591768793355-74d04bb6608f?auto=format&fit=crop&w=800&q=80" alt="صورة 3"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://i.postimg.cc/15xZQ6kR/IMG-5261.jpg" alt="صورة 4"></div>
                     </div>
                     <div class="gallery-dots">
                         <span class="dot active" onclick="goToSlide(this, 0)"></span>
@@ -888,7 +960,7 @@
                     <div>
                         <div class="truck-header">
                             <h3 class="truck-title">مان (MAN TGM 18.290)</h3>
-                            <div class="truck-subtitle">موديل: 2017 | طراز TGM</div>
+                            <div class="truck-subtitle">موديل: 2017</div>
                         </div>
                         <p class="truck-desc">شاحنة نقل متوسطة ومناسبة للتوزيع الداخلي والنقل بين المدن بكفاءة واستجابة عالية.</p>
                         
@@ -919,10 +991,10 @@
                     <button class="gallery-btn prev" onclick="changeSlide(this, -1)"><i class="fa-solid fa-chevron-right"></i></button>
                     <button class="gallery-btn next" onclick="changeSlide(this, 1)"><i class="fa-solid fa-chevron-left"></i></button>
                     <div class="gallery-track">
-                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1591768793355-74d04bb6608f?auto=format&fit=crop&w=800&q=80" alt="صورة 1"></div>
-                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80" alt="صورة 2"></div>
-                        <div class="gallery-slide"><img src="https://images.unsplash.com/photo-1586191582056-a36c73295c51?auto=format&fit=crop&w=800&q=80" alt="صورة 3"></div>
-                        <div class="gallery-slide"><img src="https://i.postimg.cc/PrHFy4Gb/IMG-5262.jpg" alt="صورة 4"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://images.unsplash.com/photo-1591768793355-74d04bb6608f?auto=format&fit=crop&w=800&q=80" alt="صورة 1"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=800&q=80" alt="صورة 2"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://images.unsplash.com/photo-1586191582056-a36c73295c51?auto=format&fit=crop&w=800&q=80" alt="صورة 3"></div>
+                        <div class="gallery-slide" onclick="openFullImage(this)"><img src="https://i.postimg.cc/PrHFy4Gb/IMG-5262.jpg" alt="صورة 4"></div>
                     </div>
                     <div class="gallery-dots">
                         <span class="dot active" onclick="goToSlide(this, 0)"></span>
@@ -936,7 +1008,7 @@
                     <div>
                         <div class="truck-header">
                             <h3 class="truck-title">رينو (Renault T High)</h3>
-                            <div class="truck-subtitle">موديل: 2020 | طراز T520</div>
+                            <div class="truck-subtitle">موديل: 2020</div>
                         </div>
                         <p class="truck-desc">شاحنة فرنسية ممتازة تجمع بين القوة والتصميم المريح مع ديناميكية هوائية ممتازة وتقليل استهلاك الوقود.</p>
                         
@@ -962,6 +1034,14 @@
         </div>
     </section>
 
+    <!-- عنصر النافذة المنبثقة للصور الكاملة (Lightbox Modal) -->
+    <div id="imageModal" class="image-modal" onclick="closeFullImage(event)">
+        <span class="modal-close-btn" onclick="closeFullImage(event)">&times;</span>
+        <div class="modal-img-container">
+            <img id="fullImage" src="" alt="صورة الشاحنة بالحجم الكامل">
+        </div>
+    </div>
+
     <!-- الفوتر Footer -->
     <footer id="contact">
         <div class="footer-content">
@@ -973,7 +1053,7 @@
         </div>
     </footer>
 
-    <!-- JavaScript المخصص لمعرض الصور والسحب والتواصل -->
+    <!-- JavaScript المخصص للمعرض والنافذة المنبثقة والسحب والتواصل -->
     <script>
         const whatsappNumber = "963940364066"; 
 
@@ -1011,6 +1091,38 @@
             const gallery = dot.closest('.truck-gallery');
             updateGallery(gallery, index);
         }
+
+        // فتح الصورة في النافذة المنبثقة بحجمها الكامل
+        function openFullImage(slideElement) {
+            const img = slideElement.querySelector('img');
+            if (img) {
+                const modal = document.getElementById('imageModal');
+                const fullImg = document.getElementById('fullImage');
+                fullImg.src = img.src;
+                modal.classList.add('show');
+                document.body.style.overflow = 'hidden'; // إيقاف التمرير الخلفي
+            }
+        }
+
+        // إغلاق النافذة المنبثقة
+        function closeFullImage(event) {
+            if (event.target.id === 'imageModal' || event.target.classList.contains('modal-close-btn') || event.target.tagName === 'SPAN') {
+                const modal = document.getElementById('imageModal');
+                modal.classList.remove('show');
+                document.body.style.overflow = 'auto'; // إعادة التمرير
+            }
+        }
+
+        // إغلاق النافذة المنبثقة عند الضغط على زر Esc
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const modal = document.getElementById('imageModal');
+                if (modal.classList.contains('show')) {
+                    modal.classList.remove('show');
+                    document.body.style.overflow = 'auto';
+                }
+            }
+        });
 
         // إضافة دعم اللمس وسحب الأصبع (Swipe)
         document.querySelectorAll('.truck-gallery').forEach(gallery => {
