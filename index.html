@@ -268,10 +268,11 @@
             transform: translateY(-2px);
         }
 
+        /* تعديل شبكة العرض لتصبح شاحنتين بجانب بعضهما */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-            gap: 35px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
         }
 
         .truck-card {
@@ -801,6 +802,13 @@
             color: #FFD166;
         }
 
+        /* الاستجابة للهواتف الذكية والأجهزة اللوحية */
+        @media (max-width: 900px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
         @media (max-width: 768px) {
             .hero h1 { font-size: 2.2rem; }
             .hero-stats { gap: 15px; padding: 12px 20px; }
@@ -808,6 +816,7 @@
             .footer-content { flex-direction: column; text-align: center; }
             .filter-grid { flex-direction: column; align-items: stretch; }
             .filter-reset-btn { align-self: auto; justify-content: center; }
+            .fleet-section { padding: 40px 4% 60px; }
         }
     </style>
 </head>
