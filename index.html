@@ -23,6 +23,8 @@
             --gradient-silver: linear-gradient(135deg, #FFFFFF 0%, #C0C0C0 50%, #707070 100%);
             --whatsapp-green: #25D366;
             --whatsapp-hover: #1EBE57;
+            --email-blue: #EA4335;
+            --email-hover: #D93025;
             --status-available: #10B981;
             --status-incoming: #F59E0B;
             --status-sold: #EF4444;
@@ -490,54 +492,65 @@
             text-align: center;
         }
 
-        .action-buttons {
+        /* تنسيق وتصغير أزرار التواصل المحدثة */
+        .action-buttons-container {
             display: flex;
-            gap: 10px;
+            flex-direction: column;
+            gap: 8px;
         }
 
-        .btn-whatsapp {
+        .action-buttons-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-sm {
+            padding: 8px 10px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            flex: 1;
-            padding: 14px 10px;
-            background: var(--whatsapp-green);
-            color: #FFFFFF;
+            gap: 6px;
+            cursor: pointer;
+            transition: 0.25s ease;
             text-decoration: none;
             border: none;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: 0.3s ease;
         }
 
-        .btn-whatsapp:hover {
-            background: var(--whatsapp-hover);
-            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
-        }
-
-        .btn-chat {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+        .btn-whatsapp-sm {
             flex: 1;
-            padding: 14px 10px;
+            background: var(--whatsapp-green);
+            color: #FFFFFF;
+        }
+
+        .btn-whatsapp-sm:hover {
+            background: var(--whatsapp-hover);
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+        }
+
+        .btn-email-sm {
+            flex: 1;
+            background: var(--email-blue);
+            color: #FFFFFF;
+        }
+
+        .btn-email-sm:hover {
+            background: var(--email-hover);
+            box-shadow: 0 4px 12px rgba(234, 67, 53, 0.3);
+        }
+
+        .btn-chat-sm {
+            width: 100%;
             background: rgba(69, 162, 158, 0.2);
             color: #FFFFFF;
             border: 1px solid var(--accent-glow);
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: 0.3s ease;
         }
 
-        .btn-chat:hover {
+        .btn-chat-sm:hover {
             background: var(--accent-glow);
-            box-shadow: 0 5px 15px rgba(69, 162, 158, 0.4);
+            box-shadow: 0 4px 12px rgba(69, 162, 158, 0.4);
         }
 
         .no-results {
@@ -791,6 +804,18 @@
             margin-bottom: 20px;
         }
 
+        .footer-location {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--silver-light);
+            font-size: 0.95rem;
+        }
+
+        .footer-location i {
+            color: var(--accent-glow);
+        }
+
         @media (max-width: 768px) {
             .hero h1 { font-size: 2.2rem; }
             .hero-stats { gap: 20px; }
@@ -799,7 +824,6 @@
             .modal-close-btn { top: 15px; right: 15px; width: 40px; height: 40px; font-size: 28px; }
             .filter-grid { flex-direction: column; align-items: stretch; }
             .filter-reset-btn { align-self: auto; justify-content: center; }
-            .action-buttons { flex-direction: column; }
         }
     </style>
 </head>
@@ -822,7 +846,7 @@
 
     <section class="hero" id="home">
         <h1>شركة شاحنات الشام للتجارة</h1>
-        <p>أسطول متكامل من شاحنات أكتروس، فولفو، مان، وإيفيكو بأحدث الموديلات وأفضل الحالات الفنية. اطلب شاحنتك مباشرة عبر الواتساب.</p>
+        <p>أسطول متكامل من شاحنات أكتروس، فولفو، مان، وإيفيكو بأحدث الموديلات وأفضل الحالات الفنية. اطلب شاحنتك مباشرة عبر الواتساب أو البريد الإلكتروني.</p>
         
         <div class="hero-stats">
             <div class="stat-item">
@@ -835,7 +859,7 @@
             </div>
             <div class="stat-item">
                 <div class="stat-number">24/7</div>
-                <div class="stat-label">دعم عبر الواتساب</div>
+                <div class="stat-label">دعم ومراسلة متاحين</div>
             </div>
         </div>
     </section>
@@ -908,7 +932,6 @@
                         <p class="truck-desc">شاحنة النقل الثقيل الأكثر اعتمادية عالمياً، مجهزة بأحدث تقنيات الراحة والسلامة.</p>
                         
                         <div class="specs-grid">
-                            <div class="spec-item"><i class="fa-solid fa-gauge-high"></i> 450 حصان</div>
                             <div class="spec-item"><i class="fa-solid fa-gears"></i> أوتوماتيك</div>
                             <div class="spec-item"><i class="fa-solid fa-road"></i> ممشى السيارة: - كم</div>
                             <div class="spec-item"><i class="fa-solid fa-gas-pump"></i> ديزل</div>
@@ -919,12 +942,17 @@
                         <div class="price-tag">
                             <span class="price-value">للإستفسار وطلب السعر تواصل معنا</span>
                         </div>
-                        <div class="action-buttons">
-                            <button class="btn-whatsapp" onclick="orderTruck('مرسيدس أكتيروس موديل 2016')">
-                                <i class="fa-brands fa-whatsapp"></i> الواتساب
-                            </button>
-                            <button class="btn-chat" onclick="openInAppChat('مرسيدس أكتيروس موديل 2016')">
-                                <i class="fa-solid fa-comments"></i> محادثة موقعنا
+                        <div class="action-buttons-container">
+                            <div class="action-buttons-row">
+                                <button class="btn-sm btn-whatsapp-sm" onclick="orderTruck('مرسيدس أكتيروس موديل 2016')">
+                                    <i class="fa-brands fa-whatsapp"></i> الواتساب
+                                </button>
+                                <button class="btn-sm btn-email-sm" onclick="emailTruck('مرسيدس أكتيروس موديل 2016')">
+                                    <i class="fa-solid fa-envelope"></i> البريد
+                                </button>
+                            </div>
+                            <button class="btn-sm btn-chat-sm" onclick="openInAppChat('مرسيدس أكتيروس موديل 2016')">
+                                <i class="fa-solid fa-comments"></i> راسل موقعنا
                             </button>
                         </div>
                     </div>
@@ -964,7 +992,6 @@
                         <p class="truck-desc">قمة الأداء والقوة والأمان. أعتى محرك في الفئة الثقيلة مخصص للمهمات الصعبة والنقل الدولي الشاق.</p>
                         
                         <div class="specs-grid">
-                            <div class="spec-item"><i class="fa-solid fa-gauge-high"></i> 460 حصان</div>
                             <div class="spec-item"><i class="fa-solid fa-gears"></i> ناقل I-Shift Crawler</div>
                             <div class="spec-item"><i class="fa-solid fa-road"></i> ممشى السيارة: - كم</div>
                             <div class="spec-item"><i class="fa-solid fa-shield-halved"></i> أنظمة أمان متطورة</div>
@@ -975,12 +1002,17 @@
                         <div class="price-tag">
                             <span class="price-value">للإستفسار وطلب السعر تواصل معنا</span>
                         </div>
-                        <div class="action-buttons">
-                            <button class="btn-whatsapp" onclick="orderTruck('فولفو 460 موديل 2023')">
-                                <i class="fa-brands fa-whatsapp"></i> الواتساب
-                            </button>
-                            <button class="btn-chat" onclick="openInAppChat('فولفو 460 موديل 2023')">
-                                <i class="fa-solid fa-comments"></i> محادثة موقعنا
+                        <div class="action-buttons-container">
+                            <div class="action-buttons-row">
+                                <button class="btn-sm btn-whatsapp-sm" onclick="orderTruck('فولفو 460 موديل 2023')">
+                                    <i class="fa-brands fa-whatsapp"></i> الواتساب
+                                </button>
+                                <button class="btn-sm btn-email-sm" onclick="emailTruck('فولفو 460 موديل 2023')">
+                                    <i class="fa-solid fa-envelope"></i> البريد
+                                </button>
+                            </div>
+                            <button class="btn-sm btn-chat-sm" onclick="openInAppChat('فولفو 460 موديل 2023')">
+                                <i class="fa-solid fa-comments"></i> راسل موقعنا
                             </button>
                         </div>
                     </div>
@@ -1020,7 +1052,6 @@
                         <p class="truck-desc">الهندسة الألمانية المتطورة مع كابينة واسعة جداً واقتصاد استثنائي في استهلاك الوقود للخطوط الطويلة.</p>
                         
                         <div class="specs-grid">
-                            <div class="spec-item"><i class="fa-solid fa-gauge-high"></i> 460 حصان</div>
                             <div class="spec-item"><i class="fa-solid fa-gears"></i> ناقل -</div>
                             <div class="spec-item"><i class="fa-solid fa-road"></i> ممشى السيارة: - كم</div>
                             <div class="spec-item"><i class="fa-solid fa-leaf"></i> محرك اقتصادي</div>
@@ -1031,12 +1062,17 @@
                         <div class="price-tag">
                             <span class="price-value">للإستفسار وطلب السعر تواصل معنا</span>
                         </div>
-                        <div class="action-buttons">
-                            <button class="btn-whatsapp" onclick="orderTruck('مان TGX موديل 2016')">
-                                <i class="fa-brands fa-whatsapp"></i> الواتساب
-                            </button>
-                            <button class="btn-chat" onclick="openInAppChat('مان TGX موديل 2016')">
-                                <i class="fa-solid fa-comments"></i> محادثة موقعنا
+                        <div class="action-buttons-container">
+                            <div class="action-buttons-row">
+                                <button class="btn-sm btn-whatsapp-sm" onclick="orderTruck('مان TGX موديل 2016')">
+                                    <i class="fa-brands fa-whatsapp"></i> الواتساب
+                                </button>
+                                <button class="btn-sm btn-email-sm" onclick="emailTruck('مان TGX موديل 2016')">
+                                    <i class="fa-solid fa-envelope"></i> البريد
+                                </button>
+                            </div>
+                            <button class="btn-sm btn-chat-sm" onclick="openInAppChat('مان TGX موديل 2016')">
+                                <i class="fa-solid fa-comments"></i> راسل موقعنا
                             </button>
                         </div>
                     </div>
@@ -1076,7 +1112,6 @@
                         <p class="truck-desc">تصميم إيطالي انسيابي وعصري للغاية، يوفر أقصى درجات التكيف والراحة أثناء القيادة.</p>
                         
                         <div class="specs-grid">
-                            <div class="spec-item"><i class="fa-solid fa-gauge-high"></i> 460 حصان</div>
                             <div class="spec-item"><i class="fa-solid fa-gears"></i> ناقل -</div>
                             <div class="spec-item"><i class="fa-solid fa-road"></i> ممشى السيارة: - كم</div>
                             <div class="spec-item"><i class="fa-solid fa-wifi"></i> نظام اتصال ذكي</div>
@@ -1087,12 +1122,17 @@
                         <div class="price-tag">
                             <span class="price-value">للإستفسار وطلب السعر تواصل معنا</span>
                         </div>
-                        <div class="action-buttons">
-                            <button class="btn-whatsapp" onclick="orderTruck('إيفيكو stralis موديل 2018')">
-                                <i class="fa-brands fa-whatsapp"></i> الواتساب
-                            </button>
-                            <button class="btn-chat" onclick="openInAppChat('إيفيكو stralis موديل 2018')">
-                                <i class="fa-solid fa-comments"></i> محادثة موقعنا
+                        <div class="action-buttons-container">
+                            <div class="action-buttons-row">
+                                <button class="btn-sm btn-whatsapp-sm" onclick="orderTruck('إيفيكو stralis موديل 2018')">
+                                    <i class="fa-brands fa-whatsapp"></i> الواتساب
+                                </button>
+                                <button class="btn-sm btn-email-sm" onclick="emailTruck('إيفيكو stralis موديل 2018')">
+                                    <i class="fa-solid fa-envelope"></i> البريد
+                                </button>
+                            </div>
+                            <button class="btn-sm btn-chat-sm" onclick="openInAppChat('إيفيكو stralis موديل 2018')">
+                                <i class="fa-solid fa-comments"></i> راسل موقعنا
                             </button>
                         </div>
                     </div>
@@ -1132,7 +1172,6 @@
                         <p class="truck-desc">شاحنة ممتازة للمسافات الطويلة مع أنظمة مساعدة السائق الحديثة وكفاءة عالية في استهلاك الوقود.</p>
                         
                         <div class="specs-grid">
-                            <div class="spec-item"><i class="fa-solid fa-gauge-high"></i> 460 حصان</div>
                             <div class="spec-item"><i class="fa-solid fa-gears"></i> أوتوماتيك PowerShift</div>
                             <div class="spec-item"><i class="fa-solid fa-road"></i> ممشى السيارة: - كم</div>
                             <div class="spec-item"><i class="fa-solid fa-gas-pump"></i> ديزل</div>
@@ -1143,12 +1182,17 @@
                         <div class="price-tag">
                             <span class="price-value">للإستفسار وطلب السعر تواصل معنا</span>
                         </div>
-                        <div class="action-buttons">
-                            <button class="btn-whatsapp" onclick="orderTruck('رينو T460 موديل 2016')">
-                                <i class="fa-brands fa-whatsapp"></i> الواتساب
-                            </button>
-                            <button class="btn-chat" onclick="openInAppChat('رينو T460 موديل 2016')">
-                                <i class="fa-solid fa-comments"></i> محادثة موقعنا
+                        <div class="action-buttons-container">
+                            <div class="action-buttons-row">
+                                <button class="btn-sm btn-whatsapp-sm" onclick="orderTruck('رينو T460 موديل 2016')">
+                                    <i class="fa-brands fa-whatsapp"></i> الواتساب
+                                </button>
+                                <button class="btn-sm btn-email-sm" onclick="emailTruck('رينو T460 موديل 2016')">
+                                    <i class="fa-solid fa-envelope"></i> البريد
+                                </button>
+                            </div>
+                            <button class="btn-sm btn-chat-sm" onclick="openInAppChat('رينو T460 موديل 2016')">
+                                <i class="fa-solid fa-comments"></i> راسل موقعنا
                             </button>
                         </div>
                     </div>
@@ -1188,7 +1232,6 @@
                         <p class="truck-desc">أقوى شاحنة للقيادة الصعبة والأحمال الفائقة. محرك قوي جداً وتجهيزات فارهة لكابينة السائق.</p>
                         
                         <div class="specs-grid">
-                            <div class="spec-item"><i class="fa-solid fa-gauge-high"></i> 460-500 حصان</div>
                             <div class="spec-item"><i class="fa-solid fa-gears"></i> أوتوماتيك I-Shift</div>
                             <div class="spec-item"><i class="fa-solid fa-road"></i> ممشى السيارة: - كم</div>
                             <div class="spec-item"><i class="fa-solid fa-shield-halved"></i> نظام أمان متكامل</div>
@@ -1199,12 +1242,17 @@
                         <div class="price-tag">
                             <span class="price-value">للإستفسار وطلب السعر تواصل معنا</span>
                         </div>
-                        <div class="action-buttons">
-                            <button class="btn-whatsapp" onclick="orderTruck('فولفو FH موديل 2016')">
-                                <i class="fa-brands fa-whatsapp"></i> الواتساب
-                            </button>
-                            <button class="btn-chat" onclick="openInAppChat('فولفو FH موديل 2016')">
-                                <i class="fa-solid fa-comments"></i> محادثة موقعنا
+                        <div class="action-buttons-container">
+                            <div class="action-buttons-row">
+                                <button class="btn-sm btn-whatsapp-sm" onclick="orderTruck('فولفو FH موديل 2016')">
+                                    <i class="fa-brands fa-whatsapp"></i> الواتساب
+                                </button>
+                                <button class="btn-sm btn-email-sm" onclick="emailTruck('فولفو FH موديل 2016')">
+                                    <i class="fa-solid fa-envelope"></i> البريد
+                                </button>
+                            </div>
+                            <button class="btn-sm btn-chat-sm" onclick="openInAppChat('فولفو FH موديل 2016')">
+                                <i class="fa-solid fa-comments"></i> راسل موقعنا
                             </button>
                         </div>
                     </div>
@@ -1244,7 +1292,6 @@
                         <p class="truck-desc">فخامة وتصميم حديث كلياً مع كابينة أرضية مسطحة توفر أقصى درجات الراحة في السفر الطويل.</p>
                         
                         <div class="specs-grid">
-                            <div class="spec-item"><i class="fa-solid fa-gauge-high"></i> 410 حصان</div>
                             <div class="spec-item"><i class="fa-solid fa-gears"></i> Opticruise أوتوماتيك</div>
                             <div class="spec-item"><i class="fa-solid fa-road"></i> ممشى السيارة: - كم</div>
                             <div class="spec-item"><i class="fa-solid fa-gas-pump"></i> ديزل </div>
@@ -1255,12 +1302,17 @@
                         <div class="price-tag">
                             <span class="price-value">للإستفسار وطلب السعر تواصل معنا</span>
                         </div>
-                        <div class="action-buttons">
-                            <button class="btn-whatsapp" onclick="orderTruck('سكانيا R410 موديل 2016')">
-                                <i class="fa-brands fa-whatsapp"></i> الواتساب
-                            </button>
-                            <button class="btn-chat" onclick="openInAppChat('سكانيا R410 موديل 2016')">
-                                <i class="fa-solid fa-comments"></i> محادثة موقعنا
+                        <div class="action-buttons-container">
+                            <div class="action-buttons-row">
+                                <button class="btn-sm btn-whatsapp-sm" onclick="orderTruck('سكانيا R410 موديل 2016')">
+                                    <i class="fa-brands fa-whatsapp"></i> الواتساب
+                                </button>
+                                <button class="btn-sm btn-email-sm" onclick="emailTruck('سكانيا R410 موديل 2016')">
+                                    <i class="fa-solid fa-envelope"></i> البريد
+                                </button>
+                            </div>
+                            <button class="btn-sm btn-chat-sm" onclick="openInAppChat('سكانيا R410 موديل 2016')">
+                                <i class="fa-solid fa-comments"></i> راسل موقعنا
                             </button>
                         </div>
                     </div>
@@ -1300,7 +1352,6 @@
                         <p class="truck-desc">شاحنة هولندية تتميز بالاعتمادية العالية وأكبر مساحة داخلية للكبينة في فئتها.</p>
                         
                         <div class="specs-grid">
-                            <div class="spec-item"><i class="fa-solid fa-gauge-high"></i> 530 حصان</div>
                             <div class="spec-item"><i class="fa-solid fa-gears"></i> TraXon أوتوماتيك</div>
                             <div class="spec-item"><i class="fa-solid fa-road"></i> ممشى السيارة: - كم</div>
                             <div class="spec-item"><i class="fa-solid fa-leaf"></i> صديقة للبيئة</div>
@@ -1311,12 +1362,17 @@
                         <div class="price-tag">
                             <span class="price-value">للإستفسار وطلب السعر تواصل معنا</span>
                         </div>
-                        <div class="action-buttons">
-                            <button class="btn-whatsapp" onclick="orderTruck('داف XF 530 موديل 2022')">
-                                <i class="fa-brands fa-whatsapp"></i> الواتساب
-                            </button>
-                            <button class="btn-chat" onclick="openInAppChat('داف XF 530 موديل 2022')">
-                                <i class="fa-solid fa-comments"></i> محادثة موقعنا
+                        <div class="action-buttons-container">
+                            <div class="action-buttons-row">
+                                <button class="btn-sm btn-whatsapp-sm" onclick="orderTruck('داف XF 530 موديل 2022')">
+                                    <i class="fa-brands fa-whatsapp"></i> الواتساب
+                                </button>
+                                <button class="btn-sm btn-email-sm" onclick="emailTruck('داف XF 530 موديل 2022')">
+                                    <i class="fa-solid fa-envelope"></i> البريد
+                                </button>
+                            </div>
+                            <button class="btn-sm btn-chat-sm" onclick="openInAppChat('داف XF 530 موديل 2022')">
+                                <i class="fa-solid fa-comments"></i> راسل موقعنا
                             </button>
                         </div>
                     </div>
@@ -1356,7 +1412,6 @@
                         <p class="truck-desc">شاحنة نقل متوسطة ومناسبة للتوزيع الداخلي والنقل بين المدن بكفاءة واستجابة عالية.</p>
                         
                         <div class="specs-grid">
-                            <div class="spec-item"><i class="fa-solid fa-gauge-high"></i> 290 حصان</div>
                             <div class="spec-item"><i class="fa-solid fa-gears"></i> مانيوال / أوتوماتيك</div>
                             <div class="spec-item"><i class="fa-solid fa-road"></i> ممشى السيارة: - كم</div>
                             <div class="spec-item"><i class="fa-solid fa-gas-pump"></i> ديزل</div>
@@ -1367,12 +1422,17 @@
                         <div class="price-tag">
                             <span class="price-value">للإستفسار وطلب السعر تواصل معنا</span>
                         </div>
-                        <div class="action-buttons">
-                            <button class="btn-whatsapp" onclick="orderTruck('مان TGM 18.290 موديل 2017')">
-                                <i class="fa-brands fa-whatsapp"></i> الواتساب
-                            </button>
-                            <button class="btn-chat" onclick="openInAppChat('مان TGM 18.290 موديل 2017')">
-                                <i class="fa-solid fa-comments"></i> محادثة موقعنا
+                        <div class="action-buttons-container">
+                            <div class="action-buttons-row">
+                                <button class="btn-sm btn-whatsapp-sm" onclick="orderTruck('مان TGM 18.290 موديل 2017')">
+                                    <i class="fa-brands fa-whatsapp"></i> الواتساب
+                                </button>
+                                <button class="btn-sm btn-email-sm" onclick="emailTruck('مان TGM 18.290 موديل 2017')">
+                                    <i class="fa-solid fa-envelope"></i> البريد
+                                </button>
+                            </div>
+                            <button class="btn-sm btn-chat-sm" onclick="openInAppChat('مان TGM 18.290 موديل 2017')">
+                                <i class="fa-solid fa-comments"></i> راسل موقعنا
                             </button>
                         </div>
                     </div>
@@ -1412,7 +1472,6 @@
                         <p class="truck-desc">شاحنة فرنسية ممتازة تجمع بين القوة والتصميم المريح مع ديناميكية هوائية ممتازة وتقليل استهلاك الوقود.</p>
                         
                         <div class="specs-grid">
-                            <div class="spec-item"><i class="fa-solid fa-gauge-high"></i> 520 حصان</div>
                             <div class="spec-item"><i class="fa-solid fa-gears"></i> Optidriver أوتوماتيك</div>
                             <div class="spec-item"><i class="fa-solid fa-road"></i> ممشى السيارة: - كم</div>
                             <div class="spec-item"><i class="fa-solid fa-gas-pump"></i> ديزل</div>
@@ -1423,12 +1482,17 @@
                         <div class="price-tag">
                             <span class="price-value">للإستفسار وطلب السعر تواصل معنا</span>
                         </div>
-                        <div class="action-buttons">
-                            <button class="btn-whatsapp" onclick="orderTruck('رينو T High موديل 2020')">
-                                <i class="fa-brands fa-whatsapp"></i> الواتساب
-                            </button>
-                            <button class="btn-chat" onclick="openInAppChat('رينو T High موديل 2020')">
-                                <i class="fa-solid fa-comments"></i> محادثة موقعنا
+                        <div class="action-buttons-container">
+                            <div class="action-buttons-row">
+                                <button class="btn-sm btn-whatsapp-sm" onclick="orderTruck('رينو T High موديل 2020')">
+                                    <i class="fa-brands fa-whatsapp"></i> الواتساب
+                                </button>
+                                <button class="btn-sm btn-email-sm" onclick="emailTruck('رينو T High موديل 2020')">
+                                    <i class="fa-solid fa-envelope"></i> البريد
+                                </button>
+                            </div>
+                            <button class="btn-sm btn-chat-sm" onclick="openInAppChat('رينو T High موديل 2020')">
+                                <i class="fa-solid fa-comments"></i> راسل موقعنا
                             </button>
                         </div>
                     </div>
@@ -1479,12 +1543,17 @@
                 <i class="fa-solid fa-truck-front"></i>
                 Truck<span>Al Sham</span>
             </div>
+            <div class="footer-location">
+                <i class="fa-solid fa-location-dot"></i>
+                <span>موقع الشركة: المنطقة الحره ، عدرا</span>
+            </div>
             <p>جميع الحقوق محفوظة © 2026 - شركة شاحنات الشام للتجارة</p>
         </div>
     </footer>
 
     <script>
         const whatsappNumber = "963940364066"; 
+        const companyEmail = "alshamtrucks2023@gmail.com";
         const TELEGRAM_BOT_TOKEN = "8794603543:AAHSISbasY8QOnUTQebXWIHi889QpU2e7fo";
         const TELEGRAM_CHAT_ID = "6204465746";
 
@@ -1501,6 +1570,12 @@
             const message = `السلام عليكم ورحمة الله،\nأود الاستفسار عن السعر للشاحنة التالية المعلن عنها في الموقع:\n\n🚛 *الشاحنة:* ${modelName}\n❓ *الطلب:* الاستفسار عن السعر وباقي التفاصيل.\n\nيرجى تزويدي بالمعلومات والأسعار والإجراءات المتبعة.`;
             const encodedMessage = encodeURIComponent(message);
             window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, '_blank');
+        }
+
+        function emailTruck(modelName) {
+            const subject = encodeURIComponent(`استفسار عن شاحنة: ${modelName}`);
+            const body = encodeURIComponent(`السلام عليكم ورحمة الله،\n\nأود الاستفسار عن تفاصيل وسعر الشاحنة التالية المعلن عنها في موقعكم:\n- الشاحنة: ${modelName}\n\nيرجى التواصل معي وتزويدي بكافة التفاصيل والأسعار المتاحة.\n\nمع الشكر.`);
+            window.location.href = `mailto:${companyEmail}?subject=${subject}&body=${body}`;
         }
 
         function openInAppChat(truckTitle) {
