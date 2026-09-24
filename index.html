@@ -64,23 +64,63 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
         }
 
-        .logo {
+        /* حاوية الشعار والعنوان التفاعلي */
+        .logo-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-text {
             font-size: 24px;
             font-weight: 900;
             color: #FFFFFF;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 8px;
             letter-spacing: 0.5px;
+            padding-right: 65px; /* مساحة لمرور الشاحنة */
         }
 
-        .logo i {
-            color: var(--brand-orange-accent);
-            font-size: 28px;
-        }
-
-        .logo span {
+        .logo-text span {
             color: #FFD166;
+        }
+
+        /* الشاحنة الواقعية المتحركة */
+        .animated-truck {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 58px;
+            height: auto;
+            z-index: 10;
+            filter: drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.4));
+            animation: driveAcrossText 7s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+        }
+
+        /* مسار حركة الشاحنة والدوران للعودة */
+        @keyframes driveAcrossText {
+            0% {
+                right: 0px;
+                transform: translateY(-50%) scaleX(1);
+            }
+            45% {
+                right: calc(100% - 50px);
+                transform: translateY(-50%) scaleX(1);
+            }
+            50% {
+                right: calc(100% - 50px);
+                transform: translateY(-50%) scaleX(-1);
+            }
+            95% {
+                right: 0px;
+                transform: translateY(-50%) scaleX(-1);
+            }
+            100% {
+                right: 0px;
+                transform: translateY(-50%) scaleX(1);
+            }
         }
 
         nav ul {
@@ -266,7 +306,6 @@
             transform: translateY(-2px);
         }
 
-        /* الإجبار على عرض شاحنتين بالصف لكل الشاشات فوق 650px */
         .grid {
             display: grid !important;
             grid-template-columns: repeat(2, 1fr) !important;
@@ -797,7 +836,6 @@
             color: #FFD166;
         }
 
-        /* تتحول إلى شاحنة واحدة فقط على الهواتف الصغيرة جداً (أقل من 650px) */
         @media (max-width: 650px) {
             .grid {
                 grid-template-columns: 1fr !important;
@@ -815,9 +853,54 @@
 <body>
 
     <header>
-        <div class="logo">
-            <i class="fa-solid fa-truck-front"></i>
-            معرض <span>شاحنات الشام</span>
+        <div class="logo-container">
+            <!-- كود SVG لشاحنة واقعية ثلاثية التدرج والظلال -->
+            <svg class="animated-truck" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="truckBody" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#FF5722" />
+                        <stop offset="100%" stop-color="#E63946" />
+                    </linearGradient>
+                    <linearGradient id="glass" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#A5F3FC" />
+                        <stop offset="100%" stop-color="#0284C7" />
+                    </linearGradient>
+                    <linearGradient id="chrome" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#E2E8F0" />
+                        <stop offset="50%" stop-color="#FFFFFF" />
+                        <stop offset="100%" stop-color="#94A3B8" />
+                    </linearGradient>
+                </defs>
+
+                <!-- مقطورة الشاحنة -->
+                <rect x="5" y="12" width="62" height="32" rx="3" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5"/>
+                <line x1="15" y1="12" x2="15" y2="44" stroke="#E2E8F0" stroke-width="1.5"/>
+                <line x1="35" y1="12" x2="35" y2="44" stroke="#E2E8F0" stroke-width="1.5"/>
+                <line x1="55" y1="12" x2="55" y2="44" stroke="#E2E8F0" stroke-width="1.5"/>
+                
+                <!-- كابينة الشاحنة -->
+                <path d="M68 44 L68 20 Q68 15 74 15 L98 15 Q106 15 110 24 L114 34 Q116 38 116 44 Z" fill="url(#truckBody)"/>
+                
+                <!-- الزجاج الأمامي -->
+                <path d="M82 18 L96 18 Q102 18 105 24 L108 31 L82 31 Z" fill="url(#glass)"/>
+                
+                <!-- الصدام والأنوار -->
+                <rect x="106" y="38" width="12" height="6" rx="2" fill="url(#chrome)"/>
+                <circle cx="114" cy="40" r="2" fill="#FFD166"/>
+                <rect x="107" y="32" width="7" height="5" rx="1" fill="#1E293B"/>
+
+                <!-- العجلات المتناسقة -->
+                <circle cx="20" cy="45" r="7" fill="#0F172A"/>
+                <circle cx="20" cy="45" r="3.5" fill="url(#chrome)"/>
+                <circle cx="52" cy="45" r="7" fill="#0F172A"/>
+                <circle cx="52" cy="45" r="3.5" fill="url(#chrome)"/>
+                <circle cx="96" cy="45" r="7.5" fill="#0F172A"/>
+                <circle cx="96" cy="45" r="4" fill="url(#chrome)"/>
+            </svg>
+
+            <div class="logo-text">
+                معرض <span>شاحنات الشام</span>
+            </div>
         </div>
         <nav>
             <ul>
@@ -1526,9 +1609,10 @@
 
     <footer id="contact">
         <div class="footer-content">
-            <div class="logo">
-                <i class="fa-solid fa-truck-front"></i>
-                معرض <span>شاحنات الشام</span>
+            <div class="logo-container">
+                <div class="logo-text">
+                    معرض <span>شاحنات الشام</span>
+                </div>
             </div>
             <div class="footer-location">
                 <i class="fa-solid fa-location-dot"></i>
