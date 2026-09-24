@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أسطول النقل الفاخر | شاحنات مرسيدس، فولفو، مان، وإيفيكو</title>
+    <title>معرض شاحنات الشام للتجارة | أسطول النقل والسيارات</title>
     <!-- خط Cairo من Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <!-- مكتبة أيقونات FontAwesome -->
@@ -11,16 +11,17 @@
     
     <style>
         :root {
-            --bg-black: #0B0C10;
-            --card-black: #1F2833;
-            --silver-main: #C0C0C0;
-            --silver-light: #E5E5E5;
-            --silver-dark: #8A8D91;
-            --accent-glow: #45A29E;
-            --text-light: #F8FAFC;
-            --text-muted: #A1A1AA;
-            --border-silver: rgba(192, 192, 192, 0.25);
-            --gradient-silver: linear-gradient(135deg, #FFFFFF 0%, #C0C0C0 50%, #707070 100%);
+            /* درجات الألوان المستوحاة من لوحة معرض شاحنات الشام */
+            --sky-blue-bg: #E3F2FD;
+            --brand-blue: #022b69;
+            --brand-blue-hover: #011d47;
+            --brand-red-orange: #E63946;
+            --brand-orange-accent: #FF5722;
+            --card-white: #FFFFFF;
+            --text-dark: #1E293B;
+            --text-muted: #64748B;
+            --border-light: #CBD5E1;
+            
             --whatsapp-green: #25D366;
             --whatsapp-hover: #1EBE57;
             --email-blue: #EA4335;
@@ -39,12 +40,15 @@
         }
 
         body {
-            background-color: var(--bg-black);
-            color: var(--text-light);
+            background-color: #dceefb;
+            color: var(--text-dark);
             overflow-x: hidden;
+            /* خلفية متدرجة مستوحاة من سماء غمام الصورة */
             background-image: 
-                radial-gradient(circle at 15% 15%, rgba(192, 192, 192, 0.05) 0%, transparent 40%),
-                radial-gradient(circle at 85% 85%, rgba(192, 192, 192, 0.03) 0%, transparent 40%);
+                radial-gradient(circle at 10% 10%, rgba(255, 255, 255, 0.9) 0%, transparent 40%),
+                radial-gradient(circle at 90% 40%, rgba(255, 255, 255, 0.8) 0%, transparent 50%),
+                radial-gradient(circle at 50% 80%, rgba(186, 230, 253, 0.6) 0%, transparent 60%),
+                linear-gradient(180deg, #bde0fe 0%, #e0f2fe 50%, #c8e6c9 100%);
             background-attachment: fixed;
         }
 
@@ -52,91 +56,96 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 8%;
-            background: rgba(11, 12, 16, 0.9);
+            padding: 18px 8%;
+            background: rgba(2, 43, 105, 0.95);
             backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border-silver);
+            border-bottom: 3px solid var(--brand-orange-accent);
             position: sticky;
             top: 0;
             z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
         }
 
         .logo {
             font-size: 26px;
             font-weight: 900;
-            color: var(--text-light);
+            color: #FFFFFF;
             display: flex;
             align-items: center;
             gap: 12px;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
 
         .logo i {
-            background: var(--gradient-silver);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--brand-orange-accent);
             font-size: 30px;
         }
 
         .logo span {
-            background: var(--gradient-silver);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #FFD166;
         }
 
         nav ul {
             display: flex;
             list-style: none;
-            gap: 30px;
+            gap: 25px;
         }
 
         nav a {
-            color: var(--silver-light);
+            color: #F8FAFC;
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 700;
             transition: 0.3s;
-            font-size: 0.95rem;
+            font-size: 1rem;
         }
 
         nav a:hover {
-            color: #FFFFFF;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            color: #FFD166;
+            text-shadow: 0 0 8px rgba(255, 209, 102, 0.5);
         }
 
         .hero {
-            height: 65vh;
+            min-height: 55vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 0 20px;
+            padding: 50px 20px;
             position: relative;
-            background: radial-gradient(circle, rgba(31, 40, 51, 0.6) 0%, rgba(11, 12, 16, 1) 80%);
-            border-bottom: 1px solid var(--border-silver);
+            background: linear-gradient(135deg, rgba(2, 43, 105, 0.88) 0%, rgba(10, 25, 47, 0.92) 100%),
+                        url('https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&w=1600&q=80') center/cover;
+            color: #FFFFFF;
+            border-bottom: 4px solid var(--brand-orange-accent);
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.3);
         }
 
         .hero h1 {
             font-size: 3.2rem;
             font-weight: 900;
             margin-bottom: 15px;
-            background: var(--gradient-silver);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #FFFFFF;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
             line-height: 1.3;
         }
 
         .hero p {
-            font-size: 1.2rem;
-            color: var(--text-muted);
-            max-width: 700px;
+            font-size: 1.25rem;
+            color: #E2E8F0;
+            max-width: 750px;
             margin-bottom: 30px;
+            font-weight: 600;
         }
 
         .hero-stats {
             display: flex;
-            gap: 40px;
-            margin-top: 20px;
+            gap: 30px;
+            margin-top: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            padding: 15px 35px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .stat-item {
@@ -145,13 +154,14 @@
 
         .stat-number {
             font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--silver-light);
+            font-weight: 900;
+            color: #FFD166;
         }
 
         .stat-label {
             font-size: 0.85rem;
-            color: var(--text-muted);
+            color: #F8FAFC;
+            font-weight: 600;
         }
 
         .fleet-section {
@@ -160,35 +170,32 @@
 
         .section-title {
             text-align: center;
-            font-size: 2.4rem;
-            font-weight: 800;
+            font-size: 2.5rem;
+            font-weight: 900;
             margin-bottom: 40px;
             position: relative;
-            background: var(--gradient-silver);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--brand-blue);
         }
 
         .section-title::after {
             content: '';
-            width: 100px;
-            height: 3px;
-            background: var(--gradient-silver);
+            width: 120px;
+            height: 4px;
+            background: var(--brand-orange-accent);
             position: absolute;
             bottom: -12px;
             left: 50%;
             transform: translateX(-50%);
-            border-radius: 2px;
+            border-radius: 4px;
         }
 
         .filter-container {
-            background: rgba(31, 40, 51, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border-silver);
+            background: #FFFFFF;
+            border: 2px solid #BEE3F8;
             border-radius: 16px;
             padding: 20px 25px;
             margin-bottom: 50px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 10px 25px rgba(2, 43, 105, 0.08);
         }
 
         .filter-grid {
@@ -208,47 +215,42 @@
         }
 
         .filter-group label {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             font-weight: 700;
-            color: var(--silver-light);
+            color: var(--brand-blue);
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
         .filter-group label i {
-            color: var(--silver-dark);
+            color: var(--brand-orange-accent);
         }
 
         .filter-select {
             width: 100%;
-            background: #0B0C10;
-            color: var(--text-light);
-            border: 1px solid var(--border-silver);
+            background: #F8FAFC;
+            color: var(--text-dark);
+            border: 1.5px solid #CBD5E1;
             padding: 12px 16px;
             border-radius: 10px;
             font-size: 0.95rem;
-            font-weight: 600;
+            font-weight: 700;
             outline: none;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
         .filter-select:hover, .filter-select:focus {
-            border-color: var(--silver-light);
-            box-shadow: 0 0 10px rgba(192, 192, 192, 0.2);
-        }
-
-        .filter-select option {
-            background: #1F2833;
-            color: #FFFFFF;
+            border-color: var(--brand-blue);
+            box-shadow: 0 0 0 3px rgba(2, 43, 105, 0.15);
         }
 
         .filter-reset-btn {
-            background: transparent;
-            color: var(--silver-dark);
-            border: 1px solid var(--border-silver);
-            padding: 12px 20px;
+            background: var(--brand-blue);
+            color: #FFFFFF;
+            border: none;
+            padding: 12px 22px;
             border-radius: 10px;
             font-weight: 700;
             font-size: 0.9rem;
@@ -258,12 +260,12 @@
             align-items: center;
             gap: 8px;
             align-self: flex-end;
+            box-shadow: 0 4px 10px rgba(2, 43, 105, 0.2);
         }
 
         .filter-reset-btn:hover {
-            color: #FFFFFF;
-            background: rgba(255, 255, 255, 0.05);
-            border-color: var(--silver-light);
+            background: var(--brand-blue-hover);
+            transform: translateY(-2px);
         }
 
         .grid {
@@ -273,15 +275,16 @@
         }
 
         .truck-card {
-            background: var(--card-black);
-            border: 1px solid var(--border-silver);
-            border-radius: 16px;
+            background: var(--card-white);
+            border: 1px solid #E2E8F0;
+            border-radius: 20px;
             overflow: hidden;
             transition: all 0.4s ease;
             position: relative;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
         }
 
         .truck-card.hidden {
@@ -290,8 +293,8 @@
 
         .truck-card:hover {
             transform: translateY(-8px);
-            border-color: var(--silver-light);
-            box-shadow: 0 15px 30px rgba(192, 192, 192, 0.15);
+            border-color: var(--brand-blue);
+            box-shadow: 0 20px 35px rgba(2, 43, 105, 0.15);
         }
 
         .truck-badges {
@@ -304,14 +307,13 @@
         }
 
         .truck-badge {
-            background: rgba(11, 12, 16, 0.85);
-            color: var(--silver-light);
-            backdrop-filter: blur(8px);
+            background: var(--brand-blue);
+            color: #FFFFFF;
             padding: 6px 16px;
             border-radius: 20px;
             font-size: 0.8rem;
             font-weight: 700;
-            border: 1px solid var(--border-silver);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
 
         .status-badge {
@@ -319,20 +321,20 @@
             border-radius: 20px;
             font-size: 0.8rem;
             font-weight: 700;
-            backdrop-filter: blur(8px);
             color: #FFFFFF;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
 
-        .status-available { background: rgba(16, 185, 129, 0.85); border: 1px solid #10B981; }
-        .status-incoming { background: rgba(245, 158, 11, 0.85); border: 1px solid #F59E0B; }
-        .status-sold { background: rgba(239, 68, 68, 0.85); border: 1px solid #EF4444; }
+        .status-available { background: var(--status-available); }
+        .status-incoming { background: var(--status-incoming); }
+        .status-sold { background: var(--status-sold); }
 
         .truck-gallery {
             position: relative;
             width: 100%;
             aspect-ratio: 4 / 3;
             overflow: hidden;
-            background-color: #12161c;
+            background-color: #F1F5F9;
             touch-action: pan-y;
         }
 
@@ -354,23 +356,22 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            pointer-events: auto;
             transition: transform 0.3s ease;
         }
 
         .gallery-slide:hover img {
-            transform: scale(1.03);
+            transform: scale(1.04);
         }
 
         .gallery-btn {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background: rgba(11, 12, 16, 0.6);
-            color: var(--silver-light);
-            border: 1px solid var(--border-silver);
-            width: 34px;
-            height: 34px;
+            background: rgba(2, 43, 105, 0.7);
+            color: #FFFFFF;
+            border: none;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -378,13 +379,11 @@
             cursor: pointer;
             z-index: 4;
             transition: 0.3s;
-            opacity: 0.8;
         }
 
         .gallery-btn:hover {
-            background: rgba(11, 12, 16, 0.9);
-            color: #fff;
-            opacity: 1;
+            background: var(--brand-blue);
+            transform: translateY(-50%) scale(1.1);
         }
 
         .gallery-btn.prev { right: 10px; }
@@ -398,7 +397,7 @@
             display: flex;
             gap: 6px;
             z-index: 4;
-            background: rgba(11, 12, 16, 0.6);
+            background: rgba(2, 43, 105, 0.6);
             padding: 4px 10px;
             border-radius: 12px;
             backdrop-filter: blur(4px);
@@ -408,13 +407,13 @@
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.5);
             cursor: pointer;
             transition: 0.3s;
         }
 
         .dot.active {
-            background: var(--silver-light);
+            background: #FFD166;
             width: 18px;
             border-radius: 4px;
         }
@@ -432,15 +431,16 @@
         }
 
         .truck-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--silver-light);
-            margin-bottom: 5px;
+            font-size: 1.45rem;
+            font-weight: 800;
+            color: var(--brand-blue);
+            margin-bottom: 4px;
         }
 
         .truck-subtitle {
-            font-size: 0.85rem;
-            color: var(--silver-dark);
+            font-size: 0.88rem;
+            color: var(--brand-orange-accent);
+            font-weight: 700;
             margin-bottom: 10px;
         }
 
@@ -456,8 +456,8 @@
             grid-template-columns: 1fr 1fr;
             gap: 12px;
             padding: 15px 0;
-            border-top: 1px solid var(--border-silver);
-            border-bottom: 1px solid var(--border-silver);
+            border-top: 1px solid #E2E8F0;
+            border-bottom: 1px solid #E2E8F0;
             margin-bottom: 20px;
         }
 
@@ -466,11 +466,12 @@
             align-items: center;
             gap: 8px;
             font-size: 0.85rem;
-            color: var(--silver-light);
+            color: var(--text-dark);
+            font-weight: 600;
         }
 
         .spec-item i {
-            color: var(--silver-dark);
+            color: var(--brand-blue);
             width: 16px;
         }
 
@@ -478,21 +479,20 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             padding: 10px;
-            background: rgba(255, 255, 255, 0.03);
+            background: #F0F9FF;
             border-radius: 8px;
-            border: 1px dashed var(--border-silver);
+            border: 1px dashed #BEE3F8;
         }
 
         .price-value {
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: var(--silver-light);
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--brand-blue);
             text-align: center;
         }
 
-        /* تنسيق وتصغير أزرار التواصل المحدثة */
         .action-buttons-container {
             display: flex;
             flex-direction: column;
@@ -505,10 +505,10 @@
         }
 
         .btn-sm {
-            padding: 8px 10px;
-            font-size: 0.8rem;
+            padding: 10px 12px;
+            font-size: 0.85rem;
             font-weight: 700;
-            border-radius: 8px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -543,14 +543,13 @@
 
         .btn-chat-sm {
             width: 100%;
-            background: rgba(69, 162, 158, 0.2);
+            background: var(--brand-blue);
             color: #FFFFFF;
-            border: 1px solid var(--accent-glow);
         }
 
         .btn-chat-sm:hover {
-            background: var(--accent-glow);
-            box-shadow: 0 4px 12px rgba(69, 162, 158, 0.4);
+            background: var(--brand-blue-hover);
+            box-shadow: 0 4px 12px rgba(2, 43, 105, 0.3);
         }
 
         .no-results {
@@ -558,8 +557,8 @@
             grid-column: 1 / -1;
             text-align: center;
             padding: 60px 20px;
-            background: rgba(31, 40, 51, 0.4);
-            border: 1px dashed var(--border-silver);
+            background: #FFFFFF;
+            border: 2px dashed #CBD5E1;
             border-radius: 16px;
             color: var(--text-muted);
         }
@@ -567,12 +566,12 @@
         .no-results i {
             font-size: 3rem;
             margin-bottom: 15px;
-            color: var(--silver-dark);
+            color: var(--brand-blue);
         }
 
         .no-results h3 {
             font-size: 1.4rem;
-            color: var(--silver-light);
+            color: var(--brand-blue);
             margin-bottom: 8px;
         }
 
@@ -610,8 +609,7 @@
             max-width: 90vw;
             max-height: 85vh;
             object-fit: contain;
-            border-radius: 8px;
-            border: 1px solid var(--border-silver);
+            border-radius: 12px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
         }
 
@@ -632,7 +630,6 @@
             align-items: center;
             justify-content: center;
             transition: 0.3s;
-            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .modal-close-btn:hover {
@@ -649,10 +646,10 @@
             max-width: calc(100vw - 40px);
             height: 500px;
             max-height: calc(100vh - 100px);
-            background: var(--card-black);
-            border: 1px solid var(--border-silver);
+            background: #FFFFFF;
+            border: 2px solid var(--brand-blue);
             border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
             z-index: 2500;
             flex-direction: column;
             overflow: hidden;
@@ -663,9 +660,9 @@
         }
 
         .chat-header {
-            background: #0B0C10;
+            background: var(--brand-blue);
             padding: 15px;
-            border-bottom: 1px solid var(--border-silver);
+            color: #FFFFFF;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -674,7 +671,6 @@
         .chat-header-title {
             font-weight: 700;
             font-size: 0.95rem;
-            color: var(--silver-light);
             display: flex;
             align-items: center;
             gap: 8px;
@@ -683,14 +679,9 @@
         .chat-close-btn {
             background: transparent;
             border: none;
-            color: var(--text-muted);
+            color: #FFFFFF;
             font-size: 1.2rem;
             cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .chat-close-btn:hover {
-            color: #FFF;
         }
 
         .chat-messages {
@@ -700,7 +691,7 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
-            background: rgba(11, 12, 16, 0.5);
+            background: #F8FAFC;
         }
 
         .chat-msg {
@@ -714,16 +705,15 @@
 
         .chat-msg.sent {
             align-self: flex-start;
-            background: rgba(69, 162, 158, 0.3);
-            border: 1px solid var(--accent-glow);
-            color: var(--text-light);
+            background: var(--brand-blue);
+            color: #FFFFFF;
             border-bottom-right-radius: 2px;
         }
 
         .chat-msg.received {
             align-self: flex-end;
-            background: #2A343D;
-            color: var(--text-light);
+            background: #E2E8F0;
+            color: var(--text-dark);
             border-bottom-left-radius: 2px;
         }
 
@@ -736,8 +726,8 @@
 
         .chat-input-area {
             padding: 10px 12px;
-            background: #0B0C10;
-            border-top: 1px solid var(--border-silver);
+            background: #FFFFFF;
+            border-top: 1px solid #E2E8F0;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -745,34 +735,29 @@
 
         .chat-input {
             flex: 1;
-            background: #1F2833;
-            border: 1px solid var(--border-silver);
+            background: #F1F5F9;
+            border: 1px solid #CBD5E1;
             padding: 8px 12px;
             border-radius: 8px;
-            color: #FFF;
+            color: var(--text-dark);
             font-size: 0.85rem;
             outline: none;
         }
 
         .chat-input:focus {
-            border-color: var(--accent-glow);
+            border-color: var(--brand-blue);
         }
 
         .chat-btn {
             background: transparent;
             border: none;
-            color: var(--accent-glow);
+            color: var(--brand-blue);
             font-size: 1.1rem;
             cursor: pointer;
             padding: 6px;
-            transition: 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-
-        .chat-btn:hover {
-            color: #FFF;
         }
 
         .chat-btn.recording {
@@ -787,12 +772,11 @@
         }
 
         footer {
-            background: #050608;
+            background: var(--brand-blue);
             padding: 40px 8% 20px;
-            border-top: 1px solid var(--border-silver);
-            text-align: center;
-            color: var(--text-muted);
+            color: #E2E8F0;
             font-size: 0.9rem;
+            border-top: 4px solid var(--brand-orange-accent);
         }
 
         .footer-content {
@@ -808,20 +792,20 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            color: var(--silver-light);
+            color: #FFFFFF;
             font-size: 0.95rem;
+            font-weight: 700;
         }
 
         .footer-location i {
-            color: var(--accent-glow);
+            color: #FFD166;
         }
 
         @media (max-width: 768px) {
             .hero h1 { font-size: 2.2rem; }
-            .hero-stats { gap: 20px; }
+            .hero-stats { gap: 15px; padding: 12px 20px; }
             nav { display: none; }
             .footer-content { flex-direction: column; text-align: center; }
-            .modal-close-btn { top: 15px; right: 15px; width: 40px; height: 40px; font-size: 28px; }
             .filter-grid { flex-direction: column; align-items: stretch; }
             .filter-reset-btn { align-self: auto; justify-content: center; }
         }
@@ -832,7 +816,7 @@
     <header>
         <div class="logo">
             <i class="fa-solid fa-truck-front"></i>
-            Truck<span>Al Sham</span>
+            معرض <span>شاحنات الشام</span>
         </div>
         <nav>
             <ul>
@@ -845,8 +829,8 @@
     </header>
 
     <section class="hero" id="home">
-        <h1>شركة شاحنات الشام للتجارة</h1>
-        <p>أسطول متكامل من شاحنات أكتروس، فولفو، مان، وإيفيكو بأحدث الموديلات وأفضل الحالات الفنية. اطلب شاحنتك مباشرة عبر الواتساب أو البريد الإلكتروني.</p>
+        <h1>معرض شاحنات الشام للتجارة</h1>
+        <p>بيع - شراء - استيراد - تصدير جميع أنواع السيارات وجميع أنواع قطع غيار السيارات. أسطول متكامل معتمد بأحدث الموديلات وأفضل الحالات الفنية.</p>
         
         <div class="hero-stats">
             <div class="stat-item">
@@ -859,7 +843,7 @@
             </div>
             <div class="stat-item">
                 <div class="stat-number">24/7</div>
-                <div class="stat-label">دعم ومراسلة متاحين</div>
+                <div class="stat-label">خدمة الزبائن</div>
             </div>
         </div>
     </section>
@@ -878,6 +862,8 @@
                         <option value="mercedes">Mercedes (مرسيدس)</option>
                         <option value="man">MAN (مان)</option>
                         <option value="iveco">Iveco (إيفيكو)</option>
+                        <option value="renault">Renault (رينو)</option>
+                        <option value="daf">DAF (داف)</option>
                     </select>
                 </div>
 
@@ -1518,7 +1504,7 @@
     <div id="inAppChatModal" class="chat-modal">
         <div class="chat-header">
             <div class="chat-header-title">
-                <i class="fa-solid fa-comments" style="color: var(--accent-glow);"></i>
+                <i class="fa-solid fa-comments"></i>
                 <span id="chatTruckTitle">محادثة الشاحنة</span>
             </div>
             <button class="chat-close-btn" onclick="closeInAppChat()">&times;</button>
@@ -1541,13 +1527,13 @@
         <div class="footer-content">
             <div class="logo">
                 <i class="fa-solid fa-truck-front"></i>
-                Truck<span>Al Sham</span>
+                معرض <span>شاحنات الشام</span>
             </div>
             <div class="footer-location">
                 <i class="fa-solid fa-location-dot"></i>
-                <span>موقع الشركة: المنطقة الحره ، عدرا</span>
+                <span>المنطقة الحرة _ عدرا _ المقسم رقم 6 _ الكتلة د | س.ت : 19932</span>
             </div>
-            <p>جميع الحقوق محفوظة © 2026 - شركة شاحنات الشام للتجارة</p>
+            <p>جميع الحقوق محفوظة © 2026 - معرض شاحنات الشام للتجارة</p>
         </div>
     </footer>
 
@@ -1557,7 +1543,6 @@
         const TELEGRAM_BOT_TOKEN = "8794603543:AAHSISbasY8QOnUTQebXWIHi889QpU2e7fo";
         const TELEGRAM_CHAT_ID = "6204465746";
 
-        // توليد معرّف فريد للزبون الحالي يتغير تلقائياً مع كل جلسة جديدة
         const CUSTOMER_SESSION_ID = Math.floor(1000 + Math.random() * 9000); 
 
         let lastUpdateId = 0;
@@ -1613,7 +1598,6 @@
             input.value = '';
             chatMessages.scrollTop = chatMessages.scrollHeight;
 
-            // إرسال النص مع ترويسة برقم الزبون الخاص
             const fullMessage = `👤 *الزبون #${CUSTOMER_SESSION_ID}*\n🚛 *الشاحنة:* ${truckTitle}\n✉️ *الرسالة:* ${text}`;
 
             try {
@@ -1695,7 +1679,6 @@
             }
         }
 
-        /* جلب الردود وتوجيه الرد للزبون المناسب مع الحماية التامة من التكرار */
         async function fetchTelegramReplies() {
             try {
                 const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getUpdates?offset=${lastUpdateId + 1}`);
@@ -1703,7 +1686,6 @@
 
                 if (data.ok && data.result.length > 0) {
                     data.result.forEach(update => {
-                        // استخدام Set لمنع معالجة نفس التحديث مجدداً
                         if (processedUpdateIds.has(update.update_id)) {
                             return;
                         }
@@ -1715,7 +1697,6 @@
 
                         if (update.message && update.message.chat.id.toString() === TELEGRAM_CHAT_ID) {
                             
-                            // التحقق مما إذا كان الرد موجهاً لزبون محدد عن طريق معرف الزبون
                             const replyToMsg = update.message.reply_to_message;
                             let targetCustomerId = null;
 
@@ -1727,7 +1708,6 @@
                                 }
                             }
 
-                            // لا يتم عرض الرد للزبون إلا إذا كان موجهاً لرقم جلسته الخاصة
                             if (targetCustomerId && targetCustomerId.toString() === CUSTOMER_SESSION_ID.toString()) {
                                 const chatMessages = document.getElementById('chatMessages');
 
